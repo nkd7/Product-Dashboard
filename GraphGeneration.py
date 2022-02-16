@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import plotly
 import plotly.express as px
+import plotly.graph_objects as go
 
 
 # Link explaining the process from plotly to json:
@@ -16,20 +17,28 @@ class GraphGenerator:
     def __init__(self, position):
         if position == 'topLeft':
             # total sales throughout the year
-            self.data = None
-            self.figure = None
+            self.data = pd.DataFrame({
+                'Fruit': ['Apples', 'Bananas', 'Oranges'],
+                'Amount': [7, 2, 3]
+            })
+            self.figure = px.bar(self.data, x='Fruit', y='Amount')
         elif position == 'topRight':
             # sales vs forecast by product
-            self.data = None
-            self.figure = None
+            self.data = pd.DataFrame({
+                'Cars': ['Honda', 'Toyota', 'Ford'],
+                'Amount': [3, 5, 9]
+            })
+            self.figure = px.bar(self.data, x='Cars', y='Amount')
         elif position == 'bottomLeft':
             # stock prices throughout the previous year
-            self.data = None
-            self.figure = None
+            self.data = pd.DataFrame({
+                'Month': ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                'Sales (thousands)': [12.3, 13.5, 14.2, 15.7, 16.8]
+            })
+            self.figure = px.scatter(self.data, x='Month', y='Sales (thousands)')
         elif position == 'bottomRight':
             # total sales by region
-            self.data = None
-            self.figure = None
+            self.figure = go.Figure(data=[go.Table(header=dict(values=['Product', 'Percent over Forecast']), cells=dict(values=[['Product A', 'Product B', 'Product C', 'Product D'], [1.78, 3.45, -7.23, 2.01]]))])
         else:
             self.data = None
             self.figure = None
