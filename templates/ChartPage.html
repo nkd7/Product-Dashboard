@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}{{page_title}}{% endblock %}
+{% block style %}
+<!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<style>
+    .interior {
+        height: 47%;
+        width: 98%;
+    }
+
+    .outer {
+        height: 95%;
+        width: 95%;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Product KPI Analysis Dashboard</h1>
+      </div>
+
+<!--      <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="984" height="414" style="display: block; height: 207px; width: 492px;">-->
+<!--          -->
+<!--      </canvas>-->
+
+    <!-- overall chart div -->
+    <div class="row outer">
+        <div class="col outer">
+            <div class="interior">
+                <div id="chart1" class="chart"></div>
+            </div>
+            <div class="interior">
+                <div id="chart3" class="chart"></div>
+            </div>
+        </div>
+        <div class="col outer">
+            <div class="interior">
+                <div id="chart2" class="chart"></div>
+            </div>
+            <div class="interior">
+                <div id="chart4" class="chart"></div>
+            </div>
+        </div>
+    </div>
+
+    </main>
+{% endblock %}
+{% block addscript %}
+    <!-- <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script> -->
+    <script>
+        var graph1 = {{ topLeft | safe }};
+        Plotly.newPlot("chart1", graph1, {});
+    </script>
+    <script>
+        var graph2 = {{ topRight | safe }};
+        Plotly.newPlot("chart2", graph2, {});
+    </script>
+    <script>
+        var graph3 = {{ bottomLeft | safe }};
+        Plotly.newPlot("chart3", graph3, {});
+    </script>
+    <script>
+        var graph4 = {{ bottomRight | safe }};
+        Plotly.newPlot("chart4", graph4, {});
+    </script>
+{% endblock %}

@@ -21,21 +21,21 @@ class GraphGenerator:
                 'Fruit': ['Apples', 'Bananas', 'Oranges'],
                 'Amount': [7, 2, 3]
             })
-            self.figure = px.bar(self.data, x='Fruit', y='Amount')
+            self.figure = px.bar(self.data, x='Fruit', y='Amount', title='Fruit Inventory')
         elif position == 'topRight':
             # sales vs forecast by product
             self.data = pd.DataFrame({
                 'Cars': ['Honda', 'Toyota', 'Ford'],
                 'Amount': [3, 5, 9]
             })
-            self.figure = px.bar(self.data, x='Cars', y='Amount')
+            self.figure = px.bar(self.data, x='Cars', y='Amount', title='Car Inventory')
         elif position == 'bottomLeft':
             # stock prices throughout the previous year
             self.data = pd.DataFrame({
                 'Month': ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-                'Sales (thousands)': [12.3, 13.5, 14.2, 15.7, 16.8]
+                'Sales (thousands)': [12.3, 13.9, 14.2, 13.1, 16.8]
             })
-            self.figure = px.scatter(self.data, x='Month', y='Sales (thousands)')
+            self.figure = px.scatter(self.data, x='Month', y='Sales (thousands)', title='Car Sales by Month')
         elif position == 'bottomRight':
             # total sales by region
             self.figure = go.Figure(data=[go.Table(header=dict(values=['Product', 'Percent over Forecast']), cells=dict(values=[['Product A', 'Product B', 'Product C', 'Product D'], [1.78, 3.45, -7.23, 2.01]]))])
