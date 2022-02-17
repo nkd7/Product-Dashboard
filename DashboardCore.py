@@ -15,7 +15,6 @@ bottomRightChartGenerator = GraphGenerator('bottomRight')
 @app.route('/', methods=["POST", "GET"])
 def home():
     if request.method == "POST":  # True if a form was submitted. Otherwise, the default homepage with default charts is given
-        json.dumps(request.form)
         if request.form['selectChartLocation'] == 'Top Left':
             topLeftChartGenerator.getdata([request.form["selectContent"], request.form["selectTimeFrame"], request.form["startDate"], request.form["endDate"], request.form["selectDemographics"]])
         elif request.form['selectChartLocation'] == 'Top Right':
