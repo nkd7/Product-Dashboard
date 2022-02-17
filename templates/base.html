@@ -41,75 +41,74 @@
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             Select the criteria below for your desired charts.
           </li>
           <li>
             The changes will be reflected in the chart chosen in the last dropdown menu.
-          </li>
+          </li> -->
         </ul>
 
       </div>
       &nbsp;
 
+      <form action="#" id="chartform" method="post">
       <!-- start dropdown -->
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          Chart Content
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><button class="dropdown-item" type="button">Total Sales (bar chart)</button></li>
-          <li><button class="dropdown-item" type="button">Actual vs Forecasted Sales by Product (double bar chart)</button></li>
-          <li><button class="dropdown-item" type="button">Company Stock</button></li>
-        </ul>
-      </div>
-      &nbsp;
-      <!-- end dropdown -->
-      <!-- start dropdown -->
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-          Timeframe
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-          <li><button class="dropdown-item" type="button">Previous Year</button></li>
-          <li><button class="dropdown-item" type="button">Current Year</button></li>
-          <li><button class="dropdown-item" type="button">Specific Month</button></li>
-        </ul>
+      <div class="mb-3">
+        <p class="form-label">KPI List</p>
+        <select name="selectContent" class="form-select">
+          <option>Total Sales</option>
+          <option>Actual vs Forecasted Sales by Product</option>
+          <option>Company Stock</option>
+          <option>Sales by Product</option>
+        </select>
       </div>
       <!-- end dropdown -->
-      &nbsp;
       <!-- start dropdown -->
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-          Demographics
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-          <li><button class="dropdown-item" type="button">Sex (double bar chart)</button></li>
-          <li><button class="dropdown-item" type="button">Region</button></li>
-          <li><button class="dropdown-item" type="button">Something else here</button></li>
-        </ul>
+      <div class="mb-3">
+        <p class="form-label">Timeframe</p>
+        <select name="selectTimeFrame" class="form-select">
+          <option>Previous Year</option>
+          <option>Current Year</option>
+          <option>Specific Month</option>
+          <option>Specified Range Below</option>
+        </select>
+      </div>
+
+        <p class="form-label">Start Date (MM/YY)</p>
+        <input type="text" name="startDate" class="form-control">
+        <p class="form-label">End Date (MM/YY)</p>
+        <input type="text" name="endDate" class="form-control">
+      <!-- end dropdown -->
+      <!-- start dropdown -->
+      <div class="mb-3">
+        <p class="form-label">Demographics</p>
+        <select name="selectDemographics" class="form-select">
+          <option>None</option>
+          <option>Sex</option>
+          <option>Region</option>
+        </select>
       </div>
       <!-- end dropdown -->
-      &nbsp;
       <!-- start dropdown -->
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
-          Chart Choice
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-          <li><button class="dropdown-item" type="button">Top Left</button></li>
-          <li><button class="dropdown-item" type="button">Top Right</button></li>
-          <li><button class="dropdown-item" type="button">Bottom Left</button></li>
-          <li><button class="dropdown-item" type="button">Bottom Right</button></li>
-        </ul>
+      <div class="mb-3">
+        <p class="form-label">Chart Location</p>
+        <select name="selectChartLocation" class="form-select">
+          <option>Top Left</option>
+          <option>Top Right</option>
+          <option>Bottom Left</option>
+          <option>Bottom Right</option>
+        </select>
       </div>
       <!-- end dropdown -->
-      &nbsp;
+      &nbsp;</form>
       <!-- submit button -->
       <div>
-        <button type="button" class="btn btn-secondary btn">Apply Changes</button>
+        <button type="submit" class="btn btn-primary btn" form="chartform">Apply Changes</button>
       </div>
+
     </nav>
+
 
     {% block content %}{% endblock %}
 
@@ -120,7 +119,7 @@
   <!-- footer -->
 
   <footer class="align-items-center py-3 my-4 border-top">
-    <p class="text-center text-muted">The Ohio State University College of Engineering CSE Capstone</p>
+    <p class="text-center text-muted">The Ohio State University College of Engineering CSE Capstone Project | Not For Professional Use or Reproduction</p>
   </footer>
 
 

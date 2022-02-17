@@ -42,12 +42,19 @@ class GraphGenerator:
         else:
             self.data = None
             self.figure = None
+        self.jsonFigure = json.dumps(self.figure, cls=plotly.utils.PlotlyJSONEncoder)
 
+    # query will come in as a list containing the following in order
+    # 0: type of chart desired
+    # 1: timeframe
+    # 2: start date (optional, only used if the option "Specified Below" is chosen for timeframe)
+    # 3: end date (same as start date)
+    # 4: demographic differentiator
     def getdata(self, query):
         # get data from database
-        # data retrieval is a big thing we need to discuss
-        # we need to have the database set up before we start pulling the data
-        self.data = None
+        self.data = None  # result of query
+        # graph figure
+        # assign the json dump to self.jsonFigure
 
     def generatechart(self):
-        return json.dumps(self.figure, cls=plotly.utils.PlotlyJSONEncoder)
+        return self.jsonFigure

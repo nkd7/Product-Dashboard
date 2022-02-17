@@ -22,10 +22,6 @@
         <h1 class="h2">Product KPI Analysis Dashboard</h1>
       </div>
 
-<!--      <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="984" height="414" style="display: block; height: 207px; width: 492px;">-->
-<!--          -->
-<!--      </canvas>-->
-
     <!-- overall chart div -->
     <div class="row outer">
         <div class="col outer">
@@ -49,7 +45,7 @@
     </main>
 {% endblock %}
 {% block addscript %}
-    <!-- <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script> -->
+    <!-- populates the quadrants on the site with the given charts -->
     <script>
         var graph1 = {{ topLeft | safe }};
         Plotly.newPlot("chart1", graph1, {});
