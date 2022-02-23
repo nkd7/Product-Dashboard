@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_template.html" %}
 {% block title %}{{page_title}}{% endblock %}
 {% block style %}
 <!-- Plotly.js -->
@@ -14,35 +14,107 @@
         height: 95%;
         width: 95%;
     }
+
+    .overall {
+        height: 95%;
+        width: 95%;
+        margin: 10px auto 10px auto;
+        align: center;
+        padding: 10px;
+    }
+
+    .mainrow {
+        height: 50%;
+        width: 98%;
+    }
+
+    .bottomright {
+        height: 100%;
+        width: 35%;
+    }
+
+    .bottomleft {
+        height: 100%;
+        width: 65%;
+    }
 </style>
 {% endblock %}
 {% block content %}
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Product KPI Analysis Dashboard</h1>
-      </div>
-
     <!-- overall chart div -->
-    <div class="row outer">
-        <div class="col outer">
-            <div class="interior">
+    <div class="overall">
+        <div class="row mainrow">
+            <div class="col">
+                <h4>Sales</h4>
                 <div id="chart1" class="chart"></div>
             </div>
-            <div class="interior">
+            <div class="col">
+                <h4>Gross Margin</h4>
+                <div id="chart2" class="chart"></div>
+            </div>
+            <div class="col">
+                <h4>Forecast vs. Actual</h4>
                 <div id="chart3" class="chart"></div>
             </div>
         </div>
-        <div class="col outer">
-            <div class="interior">
-                <div id="chart2" class="chart"></div>
-            </div>
-            <div class="interior">
+        <div class="row mainrow">
+            <div class="col bottomleft">
+                <h4>Income Statement</h4>
                 <div id="chart4" class="chart"></div>
             </div>
+            <div class="col bottomright">
+                <div class="row">
+                    <h4 style="margin: 10px auto 10px auto">Product Specific Information</h4>
+                    <form action="#" id="productchartform" method="post">
+                        <div class="row" style="margin: 10px auto 10px auto">
+                            <div class="col">
+                                <label for="indi" style="color: black">Single Product</label>
+                                <select name="indi" id="indi" class="form-control form-control-sm">
+                                    <option>N/A</option>
+                                    <option>Product A</option>
+                                    <option>Product B</option>
+                                    <option>Product C</option>
+                                    <option>Product B</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="group" style="color: black">Group of Products</label>
+                                <select name="group" id="group" class="form-control form-control-sm">
+                                    <option>N/A</option>
+                                    <option>1-10</option>
+                                    <option>11-20</option>
+                                    <option>21-30</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="demographic" style="color: black">Demographics</label>
+                                <select name="demographic" id="demographic" class="form-control form-control-sm">
+                                    <option>N/A</option>
+                                    <option>State</option>
+                                    <option>Male/Female</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary btn" form="productchartform" style="margin: auto 5px auto 5px;height: 100%;">Apply Changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h6>Product Sales</h6>
+                    </div>
+                    <div class="col">
+                        <h6>Forecast vs. Actual</h6>
+                    </div>
+                    <div class="col">
+                        <h6>Gross Margin</h6>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
-
-    </main>
 {% endblock %}
 {% block addscript %}
     <!-- populates the quadrants on the site with the given charts -->

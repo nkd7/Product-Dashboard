@@ -38,7 +38,7 @@ class GraphGenerator:
             self.figure = px.scatter(self.data, x='Month', y='Sales (thousands)', title='Car Sales by Month')
         elif position == 'bottomRight':
             # total sales by region
-            self.figure = go.Figure(data=[go.Table(header=dict(values=['Product', 'Percent over Forecast']), cells=dict(values=[['Product A', 'Product B', 'Product C', 'Product D'], [1.78, 3.45, -7.23, 2.01]]))])
+            self.figure = go.Figure(data=[go.Table(header=dict(values=['Name', 'Value']), cells=dict(values=[['Total Revenue', 'Cost of Goods Sold', 'Gross Margin', 'Operating Expenses', 'Deprec/Apprec', 'Operating Income', 'Taxes', 'Net Income'], [1034503, 561123, 1034503-561123, 179000, 12534, 1034503-561123-179000-12534, 56369, (1034503-561123-179000-12534)-54369]]))])
         else:
             self.data = None
             self.figure = None

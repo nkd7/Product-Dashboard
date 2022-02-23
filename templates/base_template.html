@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" >
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    <title>{% block title %}{% endblock %}</title>
+    {% block style %}{% endblock %}
+    <style>
+        #footer {
+            position: fixed;
+            padding: 10px 10px 0px 10px;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+        }
+
+        .whole-height {
+            width: 98%;
+            height: 98%;
+        }
+    </style>
+  </head>
+  <body>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">{{page_title}}</a>
+  <form action="#" id="mainchartform" method="post">
+      <div class="row" style="margin: 10px 10px 10px 10px">
+          <div class="col">
+              <label for="timeframe" style="color: white">Timeframe</label>
+              <select name="timeframe" id="timeframe" class="form-control form-control-sm">
+                  <option>Month</option>
+                  <option>Quarter</option>
+                  <option>Year</option>
+              </select>
+          </div>
+          <div class="col">
+              <label for="month" style="color: white">Month</label>
+              <select name="month" id="month" class="form-control form-control-sm">
+                  <option>N/A</option>
+                  <option>January</option>
+                  <option>February</option>
+                  <option>March</option>
+                  <option>April</option>
+                  <option>May</option>
+                  <option>June</option>
+                  <option>July</option>
+                  <option>August</option>
+                  <option>September</option>
+                  <option>October</option>
+                  <option>November</option>
+                  <option>December</option>
+              </select>
+          </div>
+          <div class="col">
+              <label for="quarter" style="color: white">Quarter</label>
+              <select name="quarter" id="quarter" class="form-control form-control-sm">
+                  <option>N/A</option>
+                  <option>Quarter 1</option>
+                  <option>Quarter 2</option>
+                  <option>Quarter 3</option>
+                  <option>Quarter 4</option>
+              </select>
+          </div>
+          <div class="col">
+              <label for="year" style="color: white">Year</label>
+              <select name="year" id="year" class="form-control form-control-sm">
+                  <option>N/A</option>
+                  <option>2020</option>
+                  <option>2021</option>
+              </select>
+          </div>
+          <div class="col">
+              <label for="demographic" style="color: white">Demographics</label>
+              <select name="demographic" id="demographic" class="form-control form-control-sm">
+                  <option>None</option>
+                  <option>State</option>
+                  <option>Male/Female</option>
+              </select>
+          </div>
+          <div class="col">
+              <button type="submit" class="btn btn-primary btn" form="mainchartform">Apply Changes</button>
+          </div>
+      </div>
+  </form>
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+    {% block content %}{% endblock %}
+    </div>
+</div>
+
+  <!-- footer -->
+
+  <footer class="align-items-center py-3 my-4 border-top">
+    <p class="text-center text-muted">The Ohio State University College of Engineering CSE Capstone Project | Not For Professional Use or Reproduction</p>
+  </footer>
+
+
+    {% block addscript %}{% endblock %}
+    <script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
