@@ -39,6 +39,67 @@
     }
 </style>
 {% endblock %}
+{% block navcontent %}
+<form action="#" id="mainchartform" method="post">
+      <div class="row" style="margin: 10px 10px 10px 10px">
+          <div class="col">
+              <label for="timeframe" style="color: white">Timeframe</label>
+              <select name="timeframe" id="timeframe" class="form-control form-control-sm">
+                  <option>Month</option>
+                  <option>Quarter</option>
+                  <option>Year</option>
+              </select>
+          </div>
+          <div class="col">
+              <label for="month" style="color: white">Month</label>
+              <select name="month" id="month" class="form-control form-control-sm">
+                  <option>N/A</option>
+                  <option>January</option>
+                  <option>February</option>
+                  <option>March</option>
+                  <option>April</option>
+                  <option>May</option>
+                  <option>June</option>
+                  <option>July</option>
+                  <option>August</option>
+                  <option>September</option>
+                  <option>October</option>
+                  <option>November</option>
+                  <option>December</option>
+              </select>
+          </div>
+          <div class="col">
+              <label for="quarter" style="color: white">Quarter</label>
+              <select name="quarter" id="quarter" class="form-control form-control-sm">
+                  <option>N/A</option>
+                  <option>Quarter 1</option>
+                  <option>Quarter 2</option>
+                  <option>Quarter 3</option>
+                  <option>Quarter 4</option>
+              </select>
+          </div>
+          <div class="col">
+              <label for="year" style="color: white">Year</label>
+              <select name="year" id="year" class="form-control form-control-sm">
+                  <option>N/A</option>
+                  <option>2020</option>
+                  <option>2021</option>
+              </select>
+          </div>
+          <div class="col">
+              <label for="demographic" style="color: white">Demographics</label>
+              <select name="demographic" id="demographic" class="form-control form-control-sm">
+                  <option>None</option>
+                  <option>State</option>
+                  <option>Male/Female</option>
+              </select>
+          </div>
+          <div class="col">
+              <button type="submit" class="btn btn-primary btn" form="mainchartform">Apply Changes</button>
+          </div>
+      </div>
+  </form>
+{% endblock %}
 {% block content %}
     <!-- overall chart div -->
     <div class="overall">
