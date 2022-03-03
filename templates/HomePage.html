@@ -1,0 +1,39 @@
+{% extends "base_template.html" %}
+{% block title %}Welcome{% endblock %}
+{% block style %}
+<style>
+button.homeButton:hover {
+    width: 70%;
+    height: 380px;
+    margin: 60px auto 10px auto;
+}
+</style>
+{% endblock %}
+{% block navcontentcenter %}
+
+{% endblock %}
+{% block navcontentright %}
+
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <center>
+                <a href="/inventory/"><button class="btn btn-primary btn homeButton" style="margin: 200px auto 80px auto; width: 60%; height: 300px;"><h2>Inventory</h2></button></a>
+                <p style="width: 55%; font-size: 30px;">Select the Inventory page to view stock and shipping data.</p>
+            </center>
+        </div>
+        <div class="col">
+            <center>
+                <a href="/charts/"><button class="btn btn-primary btn homeButton" style="margin: 160px auto 40px auto; width: 70%; height: 380px;"><h2>KPI Chart View</h2></button></a>
+                <p style="width: 55%; font-size: 30px;">Select the KPI Chart View to examine KPI's and associated visuals.</p>
+            </center>
+        </div>
+        <div class="col">
+            <center>
+                <a href="/tabular/"><button class="btn btn-primary btn homeButton" style="margin: 200px auto 80px auto; width: 60%; height: 300px;"><h2>Tabular View</h2></button></a>
+                <p style="width: 55%; font-size: 30px;">Select the Tabular View to see raw data as tables.</p>
+            </center>
+        </div>
+    </div>
+{% endblock %}

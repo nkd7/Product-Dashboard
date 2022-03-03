@@ -1,5 +1,5 @@
 {% extends "base_template.html" %}
-{% block title %}{{page_title}}{% endblock %}
+{% block title %}KPI Chart Analysis{% endblock %}
 {% block style %}
 <!-- Plotly.js -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -39,85 +39,164 @@
     }
 </style>
 {% endblock %}
-{% block navcontent %}
-<form action="#" id="mainchartform" method="post">
-      <div class="row" style="margin: 10px 10px 10px 10px">
-          <div class="col">
-              <label for="timeframe" style="color: white">Timeframe</label>
-              <select name="timeframe" id="timeframe" class="form-control form-control-sm">
-                  <option>Month</option>
-                  <option>Quarter</option>
-                  <option>Year</option>
-              </select>
-          </div>
-          <div class="col">
-              <label for="month" style="color: white">Month</label>
-              <select name="month" id="month" class="form-control form-control-sm">
-                  <option>N/A</option>
-                  <option>January</option>
-                  <option>February</option>
-                  <option>March</option>
-                  <option>April</option>
-                  <option>May</option>
-                  <option>June</option>
-                  <option>July</option>
-                  <option>August</option>
-                  <option>September</option>
-                  <option>October</option>
-                  <option>November</option>
-                  <option>December</option>
-              </select>
-          </div>
-          <div class="col">
-              <label for="quarter" style="color: white">Quarter</label>
-              <select name="quarter" id="quarter" class="form-control form-control-sm">
-                  <option>N/A</option>
-                  <option>Quarter 1</option>
-                  <option>Quarter 2</option>
-                  <option>Quarter 3</option>
-                  <option>Quarter 4</option>
-              </select>
-          </div>
-          <div class="col">
-              <label for="year" style="color: white">Year</label>
-              <select name="year" id="year" class="form-control form-control-sm">
-                  <option>N/A</option>
-                  <option>2020</option>
-                  <option>2021</option>
-              </select>
-          </div>
-          <div class="col">
-              <label for="demographic" style="color: white">Demographics</label>
-              <select name="demographic" id="demographic" class="form-control form-control-sm">
-                  <option>None</option>
-                  <option>State</option>
-                  <option>Male/Female</option>
-              </select>
-          </div>
-          <div class="col">
-              <button type="submit" class="btn btn-primary btn" form="mainchartform">Apply Changes</button>
-          </div>
-      </div>
-  </form>
+{% block navcontentcenter %}
+<center><h3 style="color: white">{{ title }}</h3></center>
+{% endblock %}
+{% block navcontentright %}
+
 {% endblock %}
 {% block content %}
+<center></center><form action="#" id="mainchartform" method="post" style="margin: 10px auto 10px auto; width: 40%;">
+      <div class="row" style="margin: 10px 10px 10px 10px" id="topform">
+
+      </div>
+  </form></center>
+<script>
+    var outerDiv = document.getElementById("topform");
+
+    var firstCol = document.createElement("div");
+    firstCol.setAttribute("class","col");
+    var firstLabel = document.createElement("label");
+    firstLabel.setAttribute("for","timeframe");
+    firstLabel.textContent = "Timeframe";
+    var timeframeSelect = document.createElement("select");
+    timeframeSelect.setAttribute("name","timeframe");
+    timeframeSelect.setAttribute("id","timeframe");
+    timeframeSelect.setAttribute("class","form-control form-control-sm");
+    timeframeSelect.setAttribute("onchange","GenerateNext(this.selectedIndex)");
+    var defaultOption = document.createElement("option");
+    var monthOption = document.createElement("option");
+    var quarOption = document.createElement("option");
+    var yearOption = document.createElement("option");
+    defaultOption.textContent = "N/A";
+    monthOption.textContent = "Month";
+    quarOption.textContent = "Quarter";
+    yearOption.textContent = "Year";
+
+    outerDiv.appendChild(firstCol);
+    firstCol.appendChild(firstLabel);
+    firstCol.appendChild(timeframeSelect);
+    timeframeSelect.appendChild(defaultOption);
+    timeframeSelect.appendChild(monthOption);
+    timeframeSelect.appendChild(quarOption);
+    timeframeSelect.appendChild(yearOption);
+
+    var secondCol = document.createElement("div");
+    secondCol.setAttribute("class","col");
+    var windowLabel = document.createElement("label");
+    windowLabel.setAttribute("for","timeframe");
+    windowLabel.textContent = "Window";
+    secondCol.appendChild(windowLabel);
+    var windowSelect = document.createElement("select");
+    windowSelect.setAttribute("name","windowSelect");
+    windowSelect.setAttribute("id","windowSelect");
+    windowSelect.setAttribute("class","form-control form-control-sm");
+    secondCol.appendChild(windowSelect);
+    outerDiv.appendChild(secondCol);
+
+    var thirdCol = document.createElement("div");
+    thirdCol.setAttribute("class","col");
+    var demLabel = document.createElement("label");
+    demLabel.setAttribute("for","timeframe");
+    demLabel.textContent = "Demographics";
+    var demSelect = document.createElement("select");
+    demSelect.setAttribute("name","demo");
+    demSelect.setAttribute("id","demo");
+    demSelect.setAttribute("class","form-control form-control-sm");
+    var demOp1 = document.createElement("option");
+    demOp1.textContent = "N/A";
+    var demOp2 = document.createElement("option");
+    demOp2.textContent = "State";
+    var demOp3 = document.createElement("option");
+    demOp3.textContent = "Sex";
+    demSelect.appendChild(demOp1);
+    demSelect.appendChild(demOp2);
+    demSelect.appendChild(demOp3);
+    thirdCol.appendChild(demLabel);
+    thirdCol.appendChild(demSelect);
+    outerDiv.appendChild(thirdCol);
+
+    var fourthCol = document.createElement("div");
+    fourthCol.setAttribute("class","col");
+    var submitButton = document.createElement("button");
+    submitButton.setAttribute("type","submit");
+    submitButton.setAttribute("class","btn btn-primary btn");
+    submitButton.setAttribute("form","mainchartform");
+    submitButton.setAttribute("style","margin: auto 5px auto 5px;height: 100%;");
+    submitButton.textContent = "Apply Changes";
+    fourthCol.append(submitButton);
+    outerDiv.append(fourthCol);
+
+</script>
+<script>
+    function GenerateNext(var sel) {
+        windowSelect = document.getElementById("windowSelect")
+        while (windowSelect.length > 0) {
+                windowSelect.remove(0);
+        }
+        if (sel == 1): // month
+            var jan = document.createElement("option");
+            jan.textContent = "January";
+            var feb = document.createElement("option");
+            feb.textContent = "February";
+            var mar = document.createElement("option");
+            mar.textContent = "March";
+            var apr = document.createElement("option");
+            apr.textContent = "April";
+            var may = document.createElement("option");
+            may.textContent = "May";
+            var jun = document.createElement("option");
+            jun.textContent = "June";
+            var jul = document.createElement("option");
+            jul.textContent = "July";
+            var aug = document.createElement("option");
+            aug.textContent = "August";
+            var sep = document.createElement("option");
+            sep.textContent = "September";
+            var oct = document.createElement("option");
+            oct.textContent = "October";
+            var nov = document.createElement("option");
+            nov.textContent = "November";
+            var dec = document.createElement("option");
+            dec.textContent = "December";
+
+            windowSelect.appendChild(jan);
+            windowSelect.appendChild(feb);
+            windowSelect.appendChild(mar);
+            windowSelect.appendChild(apr);
+            windowSelect.appendChild(may);
+            windowSelect.appendChild(jun);
+            windowSelect.appendChild(jul);
+            windowSelect.appendChild(aug);
+            windowSelect.appendChild(sep);
+            windowSelect.appendChild(oct);
+            windowSelect.appendChild(nov);
+            windowSelect.appendChild(dec);
+        }
+    }
+</script>
     <!-- overall chart div -->
     <div class="overall">
         <div class="row mainrow">
             <div class="col">
-                <h4>Sales</h4>
+                <center><h4>Sales</h4></center>
                 <div id="chart1" class="chart"></div>
+                <center><h6>Current Period: ${{cursales}}</h6></center>
+                <center><h6>Last Period: ${{prevsales}}</h6></center>
             </div>
             <div class="col">
-                <h4>Gross Margin</h4>
+                <center><h4>Gross Margin</h4></center>
                 <div id="chart2" class="chart"></div>
+                <center><h6>Current Period: ${{curgroMar}}</h6></center>
+                <center><h6>Last Period: ${{prevgroMar}}</h6></center>
             </div>
             <div class="col">
-                <h4>Forecast vs. Actual</h4>
+                <center><h4>Forecast vs. Actual</h4></center>
                 <div id="chart3" class="chart"></div>
+                <center><h6>Percent Over Forecast: ${{forPer}}</h6></center>
             </div>
         </div>
-        <div class="row mainrow">
+        <!-- <div class="row mainrow">
             <div class="col bottomleft">
                 <h4>Income Statement</h4>
                 <div id="chart4" class="chart"></div>
@@ -147,8 +226,8 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <label for="demographic" style="color: black">Demographics</label>
-                                <select name="demographic" id="demographic" class="form-control form-control-sm">
+                                <label for="demographics" style="color: black">Demographics</label>
+                                <select name="demographic" id="demographics" class="form-control form-control-sm">
                                     <option>N/A</option>
                                     <option>State</option>
                                     <option>Male/Female</option>
@@ -174,7 +253,7 @@
             </div>
 
 
-        </div>
+        </div> -->
     </div>
 {% endblock %}
 {% block addscript %}

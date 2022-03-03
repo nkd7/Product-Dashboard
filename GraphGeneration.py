@@ -21,21 +21,21 @@ class GraphGenerator:
                 'Fruit': ['Apples', 'Bananas', 'Oranges'],
                 'Amount': [7, 2, 3]
             })
-            self.figure = px.bar(self.data, x='Fruit', y='Amount', title='Fruit Inventory')
+            self.figure = px.bar(self.data, x='Fruit', y='Amount')
         elif position == 'topRight':
             # sales vs forecast by product
             self.data = pd.DataFrame({
                 'Cars': ['Honda', 'Toyota', 'Ford'],
                 'Amount': [3, 5, 9]
             })
-            self.figure = px.bar(self.data, x='Cars', y='Amount', title='Car Inventory')
+            self.figure = px.bar(self.data, x='Cars', y='Amount')
         elif position == 'bottomLeft':
             # stock prices throughout the previous year
             self.data = pd.DataFrame({
                 'Month': ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
                 'Sales (thousands)': [12.3, 13.9, 14.2, 13.1, 16.8]
             })
-            self.figure = px.scatter(self.data, x='Month', y='Sales (thousands)', title='Car Sales by Month')
+            self.figure = px.scatter(self.data, x='Month', y='Sales (thousands)')
         elif position == 'bottomRight':
             # total sales by region
             self.figure = go.Figure(data=[go.Table(header=dict(values=['Name', 'Value']), cells=dict(values=[['Total Revenue', 'Cost of Goods Sold', 'Gross Margin', 'Operating Expenses', 'Deprec/Apprec', 'Operating Income', 'Taxes', 'Net Income'], [1034503, 561123, 1034503-561123, 179000, 12534, 1034503-561123-179000-12534, 56369, (1034503-561123-179000-12534)-54369]]))])

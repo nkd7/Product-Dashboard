@@ -1,0 +1,64 @@
+{% extends "base_template.html" %}
+{% block title %}Tabular View{% endblock %}
+{% block style %}
+
+{% endblock %}
+
+{% block navcontentcenter %}
+<center><h3 style="color: white">{{ title }}</h3></center>
+{% endblock %}
+{% block navcontentright %}
+
+{% endblock %}
+{% block content %}
+<center><form action="#" id="tabularform" name="tabularform" method="post" style="width: 40%; margin: 20px auto 20px auto;"><div class="row">
+    <div class="col">
+        <label for="type">Data Type</label>
+        <select id="type" name="type" class="form-control form-control-sm">
+            <option>Sales</option>
+            <option>Products</option>
+            <option>Orders</option>
+            <option>Forecasts</option>
+        </select>
+    </div>
+    <div class="col">
+        <label for="year">Data Type</label>
+        <select id="year" name="year" class="form-control form-control-sm">
+            <option>All</option>
+            <option>2020</option>
+            <option>2021</option>
+            <option>2022</option>
+        </select>
+    </div>
+    <div class="col">
+        <label for="demo">Data Type</label>
+        <select id="demo" name="demo" class="form-control form-control-sm">
+            <option>N/A</option>
+            <option>State</option>
+            <option>Sex</option>
+        </select>
+    </div>
+    <div class="col">
+        <button type="submit" class="btn btn-primary btn" form="tabularform" style="height: 100%">Apply Changes</button>
+    </div>
+</div></form></center>
+<center><h3>{{chartTitle}}</h3></center>
+<center>
+    <table class="table table-hover table-striped" style="margin: 20px 15% auto 15%; width: 70%;">
+        <tr>
+            {% for h in header: %}
+            <td>{{ h }}</td>
+            {% endfor %}
+        </tr>
+        {% for d in dat: %}
+        <tr>
+            {% for e in d: %}
+            <td>{{ e }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+
+
+{% endblock %}
