@@ -63,15 +63,19 @@
     timeframeSelect.setAttribute("name","timeframe");
     timeframeSelect.setAttribute("id","timeframe");
     timeframeSelect.setAttribute("class","form-control form-control-sm");
-    timeframeSelect.setAttribute("onchange","GenerateNext(this.selectedIndex)");
+    timeframeSelect.setAttribute("onchange","ChangeWindow(this.value)");
     var defaultOption = document.createElement("option");
     var monthOption = document.createElement("option");
     var quarOption = document.createElement("option");
     var yearOption = document.createElement("option");
     defaultOption.textContent = "N/A";
+    defaultOption.value = "N/A";
     monthOption.textContent = "Month";
+    monthOption.value = "Month";
     quarOption.textContent = "Quarter";
+    quarOption.value = "Quarter";
     yearOption.textContent = "Year";
+    yearOption.value = "Year";
 
     outerDiv.appendChild(firstCol);
     firstCol.appendChild(firstLabel);
@@ -126,6 +130,10 @@
     submitButton.textContent = "Apply Changes";
     fourthCol.append(submitButton);
     outerDiv.append(fourthCol);
+    
+    function ChangeWindow(value) {
+    	
+    }
 
 </script>
 <script>
