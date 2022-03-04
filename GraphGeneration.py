@@ -3,6 +3,7 @@ import json
 import plotly
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 
 # Link explaining the process from plotly to json:
@@ -18,24 +19,38 @@ class GraphGenerator:
         if position == 'topLeft':
             # total sales throughout the year
             self.data = pd.DataFrame({
-                'Fruit': ['Apples', 'Bananas', 'Oranges'],
-                'Amount': [7, 2, 3]
+                'Month': [1,2,3,4,5,6,7,8,9,10,11,12],
+                'Sales ($)': [1232,2433,3441,1443,1213,2422,1232,1241,3141,2431,4322,1223]
             })
-            self.figure = px.bar(self.data, x='Fruit', y='Amount')
+            self.figure = px.scatter(self.data, x='Month', y='Sales ($)', trendline='lowess')
         elif position == 'topRight':
             # sales vs forecast by product
             self.data = pd.DataFrame({
-                'Cars': ['Honda', 'Toyota', 'Ford'],
-                'Amount': [3, 5, 9]
+                'Month': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                         'October', 'November', 'December'],
+                'Gross Margin': [312,132,543,133,235,542,131,432,134,542,134,233]
             })
-            self.figure = px.bar(self.data, x='Cars', y='Amount')
+            self.figure = px.bar(self.data, x='Month', y='Gross Margin')
         elif position == 'bottomLeft':
-            # stock prices throughout the previous year
-            self.data = pd.DataFrame({
-                'Month': ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-                'Sales (thousands)': [12.3, 13.9, 14.2, 13.1, 16.8]
+            df = pd.DataFrame({
+                'Month': [1,2,3,4,5,6,7,8,9,10,11,12],
+                'Sales': [1232, 2433, 3441, 1443, 1213, 2422, 1232, 1241, 3141, 2431, 4322, 1223],
+                'Forecast': [1123, 2134, 3672, 1578, 809, 3023, 1400, 1232, 3400, 2208, 4521, 2300]
             })
-            self.figure = px.scatter(self.data, x='Month', y='Sales (thousands)')
+            self.figure = make_subplots()
+
+            self.figure.add_trace(go.Scatter(x=[1,2,3,4,5,6,7,8,9,10,11,12], y=[1232, 2433, 3441, 1443, 1213, 2422, 1232, 1241, 3141, 2431, 4322, 1223], name="Sales Values"))
+            self.figure.add_trace(go.Scatter(x=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                                     y=[1123, 2134, 3672, 1578, 809, 3023, 1400, 1232, 3400, 2208, 4521, 2300],
+                                     name="Forecast Values"))
+            self.figure.update_xaxes(title_text='Month')
+            self.figure.update_yaxes(title_text='Amount ($)')
+            self.figure.update_layout(legend=dict(
+                yanchor="top",
+                y=0.99,
+                xanchor="left",
+                x=0.01
+            ))
         elif position == 'bottomRight':
             # total sales by region
             self.figure = go.Figure(data=[go.Table(header=dict(values=['Name', 'Value']), cells=dict(values=[['Total Revenue', 'Cost of Goods Sold', 'Gross Margin', 'Operating Expenses', 'Deprec/Apprec', 'Operating Income', 'Taxes', 'Net Income'], [1034503, 561123, 1034503-561123, 179000, 12534, 1034503-561123-179000-12534, 56369, (1034503-561123-179000-12534)-54369]]))])

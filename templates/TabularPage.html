@@ -11,7 +11,7 @@
 
 {% endblock %}
 {% block content %}
-<center><form action="#" id="tabularform" name="tabularform" method="post" style="width: 40%; margin: 20px auto 20px auto;"><div class="row">
+<center><form action="#" id="tabularform" name="tabularform" method="post" style="width: 50%; margin: 20px auto 20px auto;"><div class="row">
     <div class="col">
         <label for="type">Data Type</label>
         <select id="type" name="type" class="form-control form-control-sm">
@@ -22,13 +22,19 @@
         </select>
     </div>
     <div class="col">
-        <label for="year">Year</label>
-        <select id="year" name="year" class="form-control form-control-sm">
-            <option>All</option>
-            <option>2020</option>
-            <option>2021</option>
-            <option>2022</option>
-        </select>
+      <label for="window">Window Type</label>
+      <select name="window" id="window" class="form-control form-control-sm" onchange="changecat(this.value);">
+          <option value="N">N/A</option>
+          <option value="M">Month</option>
+          <option value="Q">Quarter</option>
+          <option value="Y">Year</option>
+      </select>
+    </div>
+    <div class="col">
+      <label for="timeframe">Timeframe</label>
+      <select name="timeframe" id="timeframe" class="form-control form-control-sm">
+          <option value="" disabled selected>Select</option>
+      </select>
     </div>
     <div class="col">
         <label for="demo">Demographics</label>
@@ -42,6 +48,25 @@
         <button type="submit" class="btn btn-primary btn" form="tabularform" style="height: 100%">Apply Changes</button>
     </div>
 </div></form></center>
+<script>
+    var windowByFrame = {
+        N:["N/A"],
+        M:["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        Q:["First Quarter", "Second Quarter", "Third Quarter", "Fourth Quarter"],
+        Y:["2020", "2021", "2022", "All"]
+    }
+
+    function changecat(value) {
+        if (value.length == 0) document.getElementById("timeframe").innerHTML = "<option></option>";
+        else {
+            var catOptions = "";
+            for (categoryId in windowByFrame[value]) {
+                catOptions += "<option>" + windowByFrame[value][categoryId] + "</option>";
+            }
+            document.getElementById("timeframe").innerHTML = catOptions;
+        }
+    }
+</script>
 <center><h3>{{chartTitle}}</h3></center>
 <center>
     <table class="table table-hover table-striped" style="margin: 20px 15% auto 15%; width: 70%;">
