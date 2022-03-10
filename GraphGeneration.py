@@ -28,7 +28,7 @@ class GraphGenerator:
             self.data = pd.DataFrame({
                 'Month': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
                          'October', 'November', 'December'],
-                'Gross Margin': [312,132,543,133,235,542,131,432,134,542,134,233]
+                'Gross Margin': [312,-108,543,-133,235,542,-38,432,134,542,134,233]
             })
             self.figure = px.bar(self.data, x='Month', y='Gross Margin')
         elif position == 'bottomLeft':

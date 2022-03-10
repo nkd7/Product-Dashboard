@@ -42,21 +42,43 @@ def charts():
 @app.route('/tabular/', methods=["POST", "GET"])
 def tabular():
     title = 'Sales in 2021'
+    head = dh.allsales().columns
+    vals = dh.allsales().values
     if request.method == 'POST':
         title = request.form['type']
-        if request.form['timeframe'] == 'All':
-            title = title + " from 2020-2022"
-        else:
-            title = title + " in " + request.form['timeframe']
+        if 'timeframe' in request.form.keys():
+            if request.form['timeframe'] == 'All':
+                title = title + " from 2020-2022"
+            else:
+                title = title + " in " + request.form['timeframe']
         if request.form['demo'] != 'N/A':
             title = title + " by " + request.form['demo']
-    return render_template("TabularPage.html", title='Sales and Product Data', chartTitle=title, header=dh.allsales().columns, dat=dh.allsales().values)
+        if request.form['type'] == 'Sales':
+            head = dh.allsales().columns
+            vals = dh.allsales().values
+        elif request.form['type'] == 'Products':
+            head = dh.allproducts().columns
+            vals = dh.allproducts().values
+        elif request.form['type'] == 'Forecasts':
+            head = dh.allforecasts().columns
+            vals = dh.allforecasts().values
+        elif request.form['type'] == 'Customers':
+            head = dh.allcustomers().columns
+            vals = dh.allcustomers().values
+    return render_template("TabularPage.html", title='Sales and Product Data', chartTitle=title, header=head, dat=vals)
 
 
 @app.route('/inventory/', methods=["POST", "GET"])
 def inventory():
 
     return render_template("Inventory.html", title='Inventory', header=tableHeaders, dat=tableData)
+
+
+@app.route('/sales/', methods=["POST", "GET"])
+def sales():
+
+    return render_template('sales.html', title='Sales', main_chart=LeftMainGenerator.generatechart(), secondary_chart=CenterMainGenerator.generatechart(), top_prods=[['Product A', 1332], ['Product D', 1298], ['Product H', 1209], ['Product C', 1108], ['Product D', 1067]], top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
