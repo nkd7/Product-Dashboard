@@ -47,11 +47,10 @@ def tabular():
     head = dh.allsales().columns
     vals = dh.allsales().values
     input_dict = {'month': '', 'quarter': '', 'year': '', 'sex': '', 'state': ''}
+    file = open('error.txt', 'w')
     if request.method == 'POST':
-        file = open('log.txt', 'w')
         title = request.form['type']
         if 'timeframe' in request.form.keys():
-            file.write('Timeframe found')
             if request.form['timeframe'] == 'All':
                 title = title + " from 2020-2022"
                 input_dict['year'] = ''
@@ -63,10 +62,7 @@ def tabular():
                 else:
                     title = title + ' ' + request.form['year']
                     input_dict['year'] = request.form['year']
-            file.write('Window value: ' + request.form['window'] + '\n')
-            file.write('Timeframe value: ' + request.form['timeframe'] + '\n')
             if request.form['window'] == 'M':
-                file.write('Month test: ' + str(datetime.strptime(request.form['timeframe'], "%B").month))
                 input_dict['month'] = str(datetime.strptime(request.form['timeframe'], "%B").month)
                 input_dict['quarter'] = ''
             if request.form['window'] == 'Q':
@@ -81,9 +77,11 @@ def tabular():
             input_dict['sex'] = ''
         input_dict['data'] = request.form['type']
         df = dh.get_data(input_dict)
+        file.write(str(input_dict))
+        file.write(str(df))
+        file.close()
         head = df.columns
         vals = df.values
-        file.close
     return render_template("TabularPage.html", title='Sales and Product Data', chartTitle=title, header=head, dat=vals)
 
 

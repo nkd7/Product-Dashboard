@@ -54,12 +54,12 @@ class DataHolder():
                     df = df[(df['Order Date'].dt.month < 10) & (df['Order Date'].dt.month > 6)]
                 elif quarter == '4':
                     df = df[df['Order Date'].dt.month > 9]
+            df = pd.merge(df, self.customersrows, on='Customer ID')
+            df = df[['Order Date', 'Order ID', 'Customer ID', 'Product ID', 'Quantity', 'Price', 'Customer City', 'Customer State', 'Sex']]
 
         elif data == 'Customers':
-            sale_temp = pd.DataFrame
-            sale_temp = self.salesrows[['Order Date', 'Customer ID']]
-            # sale_temp['Customer ID'] = self.salesrows[['Customer ID']]
-            df = pd.merge(self.customersrows, sale_temp, on='Customer ID')
+            df = pd.merge(self.customersrows, self.salesrows, on='Customer ID')
+            df = df[['Customer ID', 'Customer Name', 'Customer Last Name', 'Customer Contact no', 'Customer Address', 'Customer City', 'Customer State', 'Sex', 'Order Date']]
             if y != '':
                 df = df[df['Order Date'].dt.year == int(y)]
             if m != '':
@@ -106,7 +106,7 @@ class DataHolder():
             else:
                 df = temp
 
-        elif data == 'Sales by Product':
+        elif data == 'SBP':
             temp = self.salesbyproductrows
             df = temp
             if y == '2020':
