@@ -96,17 +96,17 @@ def inventory():
 @app.route('/sales/', methods=["POST", "GET"])
 def sales():
 
-    return render_template('sales.html', title='Sales', main_chart=LeftMainGenerator.generatechart(), secondary_chart=CenterMainGenerator.generatechart(), top_prods=[['Product A', 1332], ['Product D', 1298], ['Product H', 1209], ['Product C', 1108], ['Product D', 1067]], top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
+    return render_template('sales.html', title='Sales', sales_chart=LeftMainGenerator.generatechart(), top_prods=[['Product A', 1332], ['Product D', 1298], ['Product H', 1209], ['Product C', 1108], ['Product D', 1067]], top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
 
 @app.route('/GM/', methods=["POST", "GET"])
 def grossMargin():
 
-    return render_template('GrossMargin.html', title='Gross Margin', main_chart=LeftMainGenerator.generatechart(), secondary_chart=CenterMainGenerator.generatechart(), revenues=[['Stream 1', 200000], ['Stream 2', 300000], ['Stream 3', 100000], ['Stream 4', 200000], ['Stream 5', 200000]], expenses=[['Expense 1', 150000], ['Expense 2', 150000], ['Expense 3', 50000], ['Expense 4', 100000], ['Expense 5', 50000]], totalRevenue="1000000", totalExpenses="500000", netProfit ="500000", cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
+    return render_template('GrossMargin.html', title='Gross Margin', gm_chart=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), revenues=[['Product Category 1', 200000], ['Product Category 2', 300000], ['Product Category 3', 100000], ['Product Category 4', 200000], ['Product Category 5', 200000]], expenses=[['Expense 1', 150000], ['Expense 2', 150000], ['Expense 3', 50000], ['Expense 4', 100000], ['Expense 5', 50000]], totalRevenue="1000000", totalExpenses="500000", netProfit ="500000", cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
 
 @app.route('/FvA/', methods=["POST", "GET"])
-def forecastVsActual():
+def ForecastVsActual():
 
-    return render_template('ForecastVsActual.html', title='Forecast vs. Actual', main_chart=LeftMainGenerator.generatechart(), secondary_chart=CenterMainGenerator.generatechart(), top_prods=[['Product A', 1332], ['Product D', 1298], ['Product H', 1209], ['Product C', 1108], ['Product D', 1067]], top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
+    return render_template('ForecastVsActual.html', title='Forecast vs. Actual', fva_chart=RightMainGenerator.generatechart(), top_prods=[['Product A', 1332], ['Product D', 1298], ['Product H', 1209], ['Product C', 1108], ['Product D', 1067]], top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102", forPer="+12.4%")
 
 if __name__ == '__main__':
     app.run(debug=True)

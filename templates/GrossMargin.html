@@ -1,5 +1,5 @@
 {% extends "base_template.html" %}
-{% block title %}Sales{% endblock %}
+{% block title %}Gross Margin{% endblock %}
 {% block style %}
 <!-- Plotly.js -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -99,13 +99,6 @@
     <div class="overall">
         <div class="row mainrow">
             <div class="col">
-                <center><h2>Sales</h2></center>
-                <br>
-                <center><h6>Current Period: ${{cursales}}</h6></center>
-                <center><h6>Last Period: ${{prevsales}}</h6></center>
-                <div id="chart1" class="chart"></div>
-            </div>
-            <div class="col">
                 <center><h2>Gross Margin</h2></center>
                 <br>
                 <center><h6>Current Period: ${{curgroMar}}</h6></center>
@@ -161,11 +154,7 @@
 {% block addscript %}
     <!-- populates the quadrants on the site with the given charts -->
     <script>
-        var graph1 = {{ main_chart | safe }};
-        Plotly.newPlot("chart1", graph1, {});
-    </script>
-    <script>
-        var graph2 = {{ secondary_chart | safe }};
+        var graph2 = {{ gm_chart | safe }};
         Plotly.newPlot("chart2", graph2, {});
     </script>
 {% endblock %}

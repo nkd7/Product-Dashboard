@@ -1,0 +1,2 @@
+Timeframe foundWindow value: N
+Timeframe value: N/A

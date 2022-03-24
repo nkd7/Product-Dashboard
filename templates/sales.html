@@ -106,13 +106,6 @@
                 <div id="chart1" class="chart"></div>
             </div>
             <div class="col">
-                <center><h2>Gross Margin</h2></center>
-                <br>
-                <center><h6>Current Period: ${{curgroMar}}</h6></center>
-                <center><h6>Last Period: ${{prevgroMar}}</h6></center>
-                <div id="chart2" class="chart"></div>
-            </div>
-            <div class="col">
                 <h3>Top Selling Products</h3>
                 <table class="table">
                     <tr>
@@ -145,11 +138,7 @@
 {% block addscript %}
     <!-- populates the quadrants on the site with the given charts -->
     <script>
-        var graph1 = {{ main_chart | safe }};
+        var graph1 = {{ sales_chart | safe }};
         Plotly.newPlot("chart1", graph1, {});
-    </script>
-    <script>
-        var graph2 = {{ secondary_chart | safe }};
-        Plotly.newPlot("chart2", graph2, {});
     </script>
 {% endblock %}
