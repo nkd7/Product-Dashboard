@@ -1,0 +1,155 @@
+{% extends "base_template.html" %}
+{% block title %}Sales{% endblock %}
+{% block style %}
+<!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<style>
+    .interior {
+        height: 47%;
+        width: 98%;
+    }
+
+    .outer {
+        height: 95%;
+        width: 95%;
+    }
+
+    .overall {
+        height: 95%;
+        width: 95%;
+        margin: 10px auto 10px auto;
+        align: center;
+        padding: 10px;
+    }
+
+    .mainrow {
+        height: 50%;
+        width: 98%;
+    }
+
+    .bottomright {
+        height: 100%;
+        width: 35%;
+    }
+
+    .bottomleft {
+        height: 100%;
+        width: 65%;
+    }
+</style>
+{% endblock %}
+{% block navcontentcenter %}
+<center><h3 style="color: white">{{ title }}</h3></center>
+{% endblock %}
+{% block navcontentright %}
+
+{% endblock %}
+{% block content %}
+<center></center><form action="#" id="mainchartform" method="post" style="margin: 10px auto 10px auto; width: 40%;">
+      <div class="row" style="margin: 10px 10px 10px 10px" id="topform">
+          <div class="col">
+              <label for="window">Time Window Type</label>
+              <select name="window" id="window" class="form-control form-control-sm" onchange="changecat(this.value);">
+                  <option value="N">N/A</option>
+                  <option value="M">Month</option>
+                  <option value="Q">Quarter</option>
+                  <option value="Y">Year</option>
+              </select>
+          </div>
+          <div class="col">
+              <label for="timeframe">Timeframe</label>
+              <select name="timeframe" id="timeframe" class="form-control form-control-sm">
+                  <option value="" disabled selected>Select</option>
+              </select>
+          </div>
+          <div class="col">
+              <label for="demographic">Demographics</label>
+              <select name="demographic" id="demographic" class="form-control form-control-sm">
+                  <option>None</option>
+                  <option>State</option>
+                  <option>Male/Female</option>
+              </select>
+          </div>
+          <div class="col">
+              <button type="submit" class="btn btn-primary btn" form="mainchartform" style="height: 100%">Apply Changes</button>
+          </div>
+      </div>
+  </form></center>
+<script>
+    var windowByFrame = {
+        N:["N/A"],
+        M:["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        Q:["First Quarter", "Second Quarter", "Third Quarter", "Fourth Quarter"],
+        Y:["2020", "2021", "2022", "All"]
+    }
+
+    function changecat(value) {
+        if (value.length == 0) document.getElementById("timeframe").innerHTML = "<option></option>";
+        else {
+            var catOptions = "";
+            for (categoryId in windowByFrame[value]) {
+                catOptions += "<option>" + windowByFrame[value][categoryId] + "</option>";
+            }
+            document.getElementById("timeframe").innerHTML = catOptions;
+        }
+    }
+</script>
+    <!-- overall chart div -->
+    <div class="overall">
+        <div class="row mainrow">
+            <div class="col">
+                <center><h2>Sales</h2></center>
+                <br>
+                <center><h6>Current Period: ${{cursales}}</h6></center>
+                <center><h6>Last Period: ${{prevsales}}</h6></center>
+                <div id="chart1" class="chart"></div>
+            </div>
+            <div class="col">
+                <center><h2>Gross Margin</h2></center>
+                <br>
+                <center><h6>Current Period: ${{curgroMar}}</h6></center>
+                <center><h6>Last Period: ${{prevgroMar}}</h6></center>
+                <div id="chart2" class="chart"></div>
+            </div>
+            <div class="col">
+                <h3>Top Selling Products</h3>
+                <table class="table">
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Revenue Generated</th>
+                    </tr>
+                    {% for p in top_prods: %}
+                    <tr>
+                        <td>{{ p[0] }}</td>
+                        <td>${{ p[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <br>
+                <h3>Top Selling Categories</h3>
+                <table class="table">
+                    <tr>
+                        <th>Product ID</th>
+                    </tr>
+                    {% for c in top_cats: %}
+                    <tr>
+                        <td>{{ c }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block addscript %}
+    <!-- populates the quadrants on the site with the given charts -->
+    <script>
+        var graph1 = {{ main_chart | safe }};
+        Plotly.newPlot("chart1", graph1, {});
+    </script>
+    <script>
+        var graph2 = {{ secondary_chart | safe }};
+        Plotly.newPlot("chart2", graph2, {});
+    </script>
+{% endblock %}
