@@ -80,6 +80,15 @@
               </select>
           </div>
           <div class="col">
+              <label for="year">Year</label>
+              <select name="year" id="year" class="form-control form-control-sm">
+                  <option>All</option>
+                  <option>2020</option>
+                  <option>2021</option>
+                  <option>2022</option>
+              </select>
+          </div>
+          <div class="col">
               <label for="demographic">Demographics</label>
               <select name="demographic" id="demographic" class="form-control form-control-sm">
                   <option>None</option>
@@ -97,7 +106,7 @@
         N:["N/A"],
         M:["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         Q:["First Quarter", "Second Quarter", "Third Quarter", "Fourth Quarter"],
-        Y:["2020", "2021", "2022", "All"]
+        Y:[""]
     }
 
     function changecat(value) {

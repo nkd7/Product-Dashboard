@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Flask, render_template, request
 from GraphGeneration import GraphGenerator
 from DataHolder import DataHolder
@@ -44,27 +46,44 @@ def tabular():
     title = 'Sales in 2021'
     head = dh.allsales().columns
     vals = dh.allsales().values
+    input_dict = {'month': '', 'quarter': '', 'year': '', 'sex': '', 'state': ''}
     if request.method == 'POST':
+        file = open('log.txt', 'w')
         title = request.form['type']
         if 'timeframe' in request.form.keys():
+            file.write('Timeframe found')
             if request.form['timeframe'] == 'All':
                 title = title + " from 2020-2022"
+                input_dict['year'] = ''
             else:
                 title = title + " in " + request.form['timeframe']
-        if request.form['demo'] != 'N/A':
-            title = title + " by " + request.form['demo']
-        if request.form['type'] == 'Sales':
-            head = dh.allsales().columns
-            vals = dh.allsales().values
-        elif request.form['type'] == 'Products':
-            head = dh.allproducts().columns
-            vals = dh.allproducts().values
-        elif request.form['type'] == 'Forecasts':
-            head = dh.allforecasts().columns
-            vals = dh.allforecasts().values
-        elif request.form['type'] == 'Customers':
-            head = dh.allcustomers().columns
-            vals = dh.allcustomers().values
+                if request.form['year'] == 'All':
+                    title = title + " 2020, 2021, and 2022"
+                    input_dict['year'] = ''
+                else:
+                    title = title + ' ' + request.form['year']
+                    input_dict['year'] = request.form['year']
+            file.write('Window value: ' + request.form['window'] + '\n')
+            file.write('Timeframe value: ' + request.form['timeframe'] + '\n')
+            if request.form['window'] == 'M':
+                file.write('Month test: ' + str(datetime.strptime(request.form['timeframe'], "%B").month))
+                input_dict['month'] = str(datetime.strptime(request.form['timeframe'], "%B").month)
+                input_dict['quarter'] = ''
+            if request.form['window'] == 'Q':
+                input_dict['quarter'] = str(request.form['timeframe'])
+        if request.form['state'] != 'N/A':
+            input_dict['state'] = request.form['state']
+        else:
+            input_dict['state'] = ''
+        if request.form['sex'] != 'N/A':
+            input_dict['sex'] = request.form['sex']
+        else:
+            input_dict['sex'] = ''
+        input_dict['data'] = request.form['type']
+        df = dh.get_data(input_dict)
+        head = df.columns
+        vals = df.values
+        file.close
     return render_template("TabularPage.html", title='Sales and Product Data', chartTitle=title, header=head, dat=vals)
 
 

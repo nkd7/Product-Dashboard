@@ -19,6 +19,7 @@
             <option>Products</option>
             <option>Customers</option>
             <option>Forecasts</option>
+            <option>Sales by Product</option>
         </select>
     </div>
     <div class="col">
@@ -33,15 +34,35 @@
     <div class="col">
       <label for="timeframe">Timeframe</label>
       <select name="timeframe" id="timeframe" class="form-control form-control-sm">
-          <option value="" disabled selected>Select</option>
+          <option value="">Select</option>
       </select>
     </div>
     <div class="col">
-        <label for="demo">Demographics</label>
-        <select id="demo" name="demo" class="form-control form-control-sm">
-            <option>N/A</option>
-            <option>State</option>
-            <option>Sex</option>
+      <label for="year">Year</label>
+      <select name="year" id="year" class="form-control form-control-sm">
+          <option value="All">All</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+      </select>
+    </div>
+    <div class="col">
+        <label for="state">State</label>
+        <select id="state" name="state" class="form-control form-control-sm">
+            <option value="">N/A</option>
+            <option value="Ohio">Ohio</option>
+            <option value="California">California</option>
+            <option value="Arizona">Arizona</option>
+            <option value="Oklahoma">Oklahoma</option>
+            <option value="Florida">Florida</option>
+        </select>
+    </div>
+    <div class="col">
+        <label for="sex">Sex</label>
+        <select id="sex" name="sex" class="form-control form-control-sm">
+            <option value="">N/A</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
         </select>
     </div>
     <div class="col">
@@ -53,7 +74,7 @@
         N:["N/A"],
         M:["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         Q:["First Quarter", "Second Quarter", "Third Quarter", "Fourth Quarter"],
-        Y:["2020", "2021", "2022", "All"]
+        Y:[""]
     }
 
     function changecat(value) {
