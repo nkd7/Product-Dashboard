@@ -6,18 +6,11 @@ from DataHolder import DataHolder
 
 app = Flask(__name__)
 
-LeftMainGenerator = GraphGenerator('topLeft')
-CenterMainGenerator = GraphGenerator('topRight')
-RightMainGenerator = GraphGenerator('bottomLeft')
-SmallChartLeft = GraphGenerator('bottomRight')
-SmallChartRight = GraphGenerator('bottomRight')
-SmallChartCenter = GraphGenerator('bottomRight')
-
-tableHeaders = ['Order Date', 'Order Number', 'Customer ID', 'Product', 'Quantity', 'Sale Price ($)']
-tableData = [['1/21/21', '123', '12', 'Product 1', '2', '44'], ['2/11/21', '54', '15', 'Product 6', '4', '24'], ['3/23/21', '14', '63', 'Product 12', '1', '25'], ['4/15/21', '46', '78', 'Product 15', '9', '18'], ['5/21/21', '874', '62', 'Product 17', '3', '90'], ['6/30/21', '234', '90', 'Product 24', '1', '20'], ]
+LeftMainGenerator = GraphGenerator('sales')
+CenterMainGenerator = GraphGenerator('gromar')
+RightMainGenerator = GraphGenerator('forecast')
 
 dh = DataHolder()
-
 
 # will send GraphGenerator.generatechart() output as input to populate the charts
 
@@ -33,12 +26,8 @@ def charts():
             LeftMainGenerator.getdata(request.form)
             CenterMainGenerator.getdata(request.form)
             RightMainGenerator.getdata(request.form)
-        else: # CASE: small chart update requested
-            SmallChartLeft.getdata(request.form)
-            SmallChartRight.getdata(request.form)
-            SmallChartCenter.getdata(request.form)
 
-    return render_template("ChartPage.html", title='KPI Chart Analysis', topLeft=LeftMainGenerator.generatechart(), topRight=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), bottomRight=SmallChartLeft.generatechart(), cursales=LeftMainGenerator.total_sales(), curgroMar=CenterMainGenerator.gross_margin(), forPer=RightMainGenerator.forecast_percent())
+    return render_template("ChartPage.html", title='KPI Chart Analysis', topLeft=LeftMainGenerator.generatechart(), topRight=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), cursales=LeftMainGenerator.total_sales(), curgroMar=CenterMainGenerator.gross_margin(), forPer=RightMainGenerator.forecast_percent())
 
 
 @app.route('/tabular/', methods=["POST", "GET"])
@@ -102,7 +91,7 @@ def tabular():
 @app.route('/inventory/', methods=["POST", "GET"])
 def inventory():
 
-    return render_template("Inventory.html", title='Inventory', header=tableHeaders, dat=tableData)
+    return render_template("Inventory.html", title='Inventory', header=dh.salesrows.columns, dat=dh.salesrows.values)
 
 
 @app.route('/sales/', methods=["POST", "GET"])

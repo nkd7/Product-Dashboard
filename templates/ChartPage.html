@@ -63,16 +63,6 @@
 {% block content %}
 <center><form action="#" id="chartform" name="chartform" method="post" style="width: 50%; margin: 20px auto 20px auto;"><div class="row">
     <div class="col">
-        <label for="type">Data Type</label>
-        <select id="type" name="type" class="form-control form-control-sm" onchange="changecat2(this.value);">
-            <option value="Sales">Sales</option>
-            <option value="Products">Products</option>
-            <option value="Customers">Customers</option>
-            <option value="Forecasts">Forecasts</option>
-            <option value="SBP">Sales by Product</option>
-        </select>
-    </div>
-    <div class="col">
       <label for="window">Window Type</label>
       <select name="window" id="window" class="form-control form-control-sm" onchange="changecat1(this.value);">
           <option value="N">N/A</option>
@@ -128,22 +118,6 @@
         Y:[""]
     }
 
-    var state = {
-        Sales:["N/A", "Ohio", "Arizona", "California", "Texas", "Florida", "New York"],
-        Products:["N/A"],
-        Customers:["N/A", "Ohio", "Arizona", "California", "Texas", "Florida", "New York"],
-        Forecasts:["N/A"],
-        SBP:["N/A"]
-    }
-
-    var sex = {
-        Sales:["N/A", "Male", "Female"],
-        Products:["N/A"],
-        Customers:["N/A", "Male", "Female"],
-        Forecasts:["N/A"],
-        SBP:["N/A"]
-    }
-
     function changecat1(value) {
         if (value.length == 0) document.getElementById("timeframe").innerHTML = "<option></option>";
         else {
@@ -152,25 +126,6 @@
                 catOptions += "<option>" + windowByFrame[value][categoryId] + "</option>";
             }
             document.getElementById("timeframe").innerHTML = catOptions;
-        }
-    }
-
-    function changecat2(value) {
-        if (value.length == 0) document.getElementById("state").innerHTML = "<option></option>";
-        else {
-            var catOptions = "";
-            for (categoryId in state[value]) {
-                catOptions += "<option>" + state[value][categoryId] + "</option>";
-            }
-            document.getElementById("state").innerHTML = catOptions;
-        }
-        if (value.length == 0) document.getElementById("sex").innerHTML = "<option></option>";
-        else {
-            var catOptions = "";
-            for (categoryId in sex[value]) {
-                catOptions += "<option>" + sex[value][categoryId] + "</option>";
-            }
-            document.getElementById("sex").innerHTML = catOptions;
         }
     }
 </script>

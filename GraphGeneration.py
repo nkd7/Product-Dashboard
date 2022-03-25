@@ -1,3 +1,4 @@
+import datetime as dt
 import pandas as pd
 import json
 import plotly
@@ -17,8 +18,9 @@ class GraphGenerator:
     # couple random ones for now)
     # the variable self.data will change in getdata() when a new query is run
     def __init__(self, position):
+        self.position = position
         dh = DataHolder()
-        if position == 'topLeft':
+        if position == 'sales':
             # total sales throughout the year
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
             mon_sal = []
@@ -32,7 +34,7 @@ class GraphGenerator:
                 'Sales ($)': mon_sal
             })
             self.figure = px.scatter(self.data, x='Month', y='Sales ($)', trendline='lowess')
-        elif position == 'topRight':
+        elif position == 'gromar':
             # gross margin
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
             df_cogs = dh.get_cogs({'month': '', 'quarter': '', 'year': '', 'data': 'Sales', 'state': '', 'sex': ''})
@@ -53,7 +55,7 @@ class GraphGenerator:
                 'Gross Margin': mon_gross
             })
             self.figure = px.bar(self.data, x='Month', y='Gross Margin')
-        elif position == 'bottomLeft':
+        elif position == 'forecast':
             # forecast vs actual
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
             mon_sal = []
@@ -92,17 +94,92 @@ class GraphGenerator:
             self.figure = None
         self.jsonFigure = json.dumps(self.figure, cls=plotly.utils.PlotlyJSONEncoder)
 
-    # query will come in as a list containing the following in order
-    # 0: type of chart desired
-    # 1: timeframe
-    # 2: start date (optional, only used if the option "Specified Below" is chosen for timeframe)
-    # 3: end date (same as start date)
-    # 4: demographic differentiator
-    def getdata(self, query):
-        # get data from database
-        self.data = None  # result of query
-        # graph figure
-        # assign the json dump to self.jsonFigure
+    def getdata(self, input_dict):
+        inputs = {'quarter': '', 'month': '', 'year': input_dict['year'], 'state': input_dict['state'], 'sex': input_dict['sex']}
+        if inputs['year'] == 'All':
+            inputs['year'] = ''
+        if 'timeframe' in input_dict:
+            if input_dict['window'] == 'M':
+                inputs['month'] = str(dt.strptime(input_dict['timeframe'], "%B").month)
+            if input_dict['window'] == 'Q':
+                inputs['quarter'] = str(input_dict['timeframe'])
+        dh = DataHolder()
+        if self.position == 'sales':
+            inputs['data'] = 'Sales'
+            df = dh.get_data(inputs)
+            mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            mon_sal = []
+            self.tot_sales = 0
+            for month in mons:
+                mon_sal.append(int(df[df['Order Date'].dt.month == month]['Price'].sum()))
+                self.tot_sales = self.tot_sales + mon_sal[month - 1]
+            self.data = pd.DataFrame({
+                'Month': mons,
+                'Sales ($)': mon_sal
+            })
+            self.figure = px.scatter(self.data, x='Month', y='Sales ($)', trendline='lowess')
+        elif self.position == 'gromar':
+            # gross margin
+            mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            inputs['data'] = 'Sales'
+            df_cogs = dh.get_cogs(inputs)
+            mon_sal = []
+            mon_cogs = []
+            mon_gross = []
+            inputs['data'] = 'Sales'
+            df = dh.get_data(inputs)
+            for month in mons:
+                mon_sal.append(int(df[df['Order Date'].dt.month == month]['Price'].sum()))
+                mon_cogs.append(int(df_cogs[df_cogs['Order Date'].dt.month == month]['COGS'].sum()))
+            self.gro_mar = 0
+            for i in range(12):
+                mon_gross.append(mon_sal[i] - mon_cogs[i])
+                self.gro_mar = self.gro_mar + mon_gross[i]
+            self.data = pd.DataFrame({
+                'Month': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                          'October', 'November', 'December'],
+                'Gross Margin': mon_gross
+            })
+            self.figure = px.bar(self.data, x='Month', y='Gross Margin')
+        elif self.position == 'forecasts':
+            # forecast vs actual
+            mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            mon_sal = []
+            mon_for = []
+            inputs['data'] = 'Sales'
+            df_s = dh.get_data(inputs)
+            inputs['data'] = 'Forecasts'
+            df_f = dh.get_data(inputs)
+            self.for_per = 0
+            for month in mons:
+                mon_sal.append(int(df_s[df_s['Order Date'].dt.month == month]['Price'].sum()))
+                if inputs['year'] == '':
+                    mon_for.append(int((df_f['2020 FC Sales'].sum() / 12)) + int((df_f['2021 FC Sales'].sum() / 12)) + int(
+                    (df_f['2022 FC Sales'].sum() / 12)))
+                else:
+                    mon_for.append(int(df_f['Sales'].sum() / 12))
+            self.for_per = sum(mon_sal) / sum(mon_for)
+            df = pd.DataFrame({
+                'Month': mons,
+                'Sales': mon_sal,
+                'Forecast': mon_for
+            })
+            self.figure = make_subplots()
+
+            self.figure.add_trace(go.Scatter(x=mons, y=mon_sal, name="Sales Values"))
+            self.figure.add_trace(go.Scatter(x=mons,
+                                             y=mon_for,
+                                             name="Forecast Values"))
+            self.figure.update_xaxes(title_text='Month')
+            self.figure.update_yaxes(title_text='Amount ($)')
+            self.figure.update_layout(legend=dict(
+                yanchor="top",
+                y=0.99,
+                xanchor="left",
+                x=0.01
+            ))
+        self.jsonFigure = json.dumps(self.figure, cls=plotly.utils.PlotlyJSONEncoder)
+
 
     def generatechart(self):
         return self.jsonFigure
