@@ -160,16 +160,17 @@
     }
 </script>
     <!-- overall chart div -->
+<center>
     <div class="overall">
         <div class="row mainrow">
-            <div class="col">
+            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
                 <center><h2>Sales</h2></center>
                 <br>
                 <center><h6>Current Period: ${{cursales}}</h6></center>
                 <center><h6>Last Period: ${{prevsales}}</h6></center>
                 <div id="chart1" class="chart"></div>
             </div>
-            <div class="col">
+            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
                 <h3>Top Selling Products</h3>
                 <table class="table">
                     <tr>
@@ -198,6 +199,7 @@
             </div>
         </div>
     </div>
+</center>
 {% endblock %}
 {% block addscript %}
     <!-- populates the quadrants on the site with the given charts -->
