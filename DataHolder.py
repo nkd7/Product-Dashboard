@@ -205,3 +205,10 @@ class DataHolder():
         for_dict['actS'] = int(df_s['Price'].sum())
         for_dict['actQ'] = int(df_s['Quantity'].sum())
         return for_dict
+
+    def get_cogs(self, in_dict):
+        df = self.get_data(in_dict)
+        df = pd.merge(df, self.productsrows)
+        df = df[['Order Date', 'Product ID', 'Quantity', 'Price', 'Product_name', 'Product_Price', 'Product_CostPrice']]
+        df['COGS'] = df['Quantity'] * df['Product_CostPrice']
+        return df[['COGS', 'Product ID', 'Quantity', 'Order Date', 'Price']]

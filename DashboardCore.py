@@ -38,17 +38,23 @@ def charts():
             SmallChartRight.getdata(request.form)
             SmallChartCenter.getdata(request.form)
 
-    return render_template("ChartPage.html", title='KPI Chart Analysis', topLeft=LeftMainGenerator.generatechart(), topRight=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), bottomRight=SmallChartLeft.generatechart(), cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102", forPer="+12.4%")
+    return render_template("ChartPage.html", title='KPI Chart Analysis', topLeft=LeftMainGenerator.generatechart(), topRight=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), bottomRight=SmallChartLeft.generatechart(), cursales=LeftMainGenerator.total_sales(), curgroMar=CenterMainGenerator.gross_margin(), forPer=RightMainGenerator.forecast_percent())
 
 
 @app.route('/tabular/', methods=["POST", "GET"])
 def tabular():
     title = 'Sales in 2020, 2021, and 2022'
-    head = dh.allsales().columns
-    vals = dh.allsales().values
-    input_dict = {'month': '', 'quarter': '', 'year': '', 'sex': '', 'state': ''}
+    head = None
+    vals = None
+    input_dict = {'month': '', 'quarter': '', 'year': '', 'sex': '', 'state': '', 'data': ''}
     sales_dict = {}
     for_dict = {}
+    if request.method == 'GET':
+        input_dict['data'] = 'Sales'
+        sales_dict = dh.sales_data(input_dict)
+        df = dh.get_data(input_dict)
+        head = df.columns
+        vals = df.values
     if request.method == 'POST':
         title = request.form['type']
         if 'timeframe' in request.form.keys():
