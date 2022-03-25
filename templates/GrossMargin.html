@@ -46,45 +46,90 @@
 
 {% endblock %}
 {% block content %}
-<center></center><form action="#" id="mainchartform" method="post" style="margin: 10px auto 10px auto; width: 40%;">
-      <div class="row" style="margin: 10px 10px 10px 10px" id="topform">
-          <div class="col">
-              <label for="window">Time Window Type</label>
-              <select name="window" id="window" class="form-control form-control-sm" onchange="changecat(this.value);">
-                  <option value="N">N/A</option>
-                  <option value="M">Month</option>
-                  <option value="Q">Quarter</option>
-                  <option value="Y">Year</option>
-              </select>
-          </div>
-          <div class="col">
-              <label for="timeframe">Timeframe</label>
-              <select name="timeframe" id="timeframe" class="form-control form-control-sm">
-                  <option value="" disabled selected>Select</option>
-              </select>
-          </div>
-          <div class="col">
-              <label for="demographic">Demographics</label>
-              <select name="demographic" id="demographic" class="form-control form-control-sm">
-                  <option>None</option>
-                  <option>State</option>
-                  <option>Male/Female</option>
-              </select>
-          </div>
-          <div class="col">
-              <button type="submit" class="btn btn-primary btn" form="mainchartform" style="height: 100%">Apply Changes</button>
-          </div>
-      </div>
-  </form></center>
+<center><form action="#" id="tabularform" name="tabularform" method="post" style="width: 50%; margin: 20px auto 20px auto;"><div class="row">
+    <div class="col">
+        <label for="type">Data Type</label>
+        <select id="type" name="type" class="form-control form-control-sm" onchange="changecat2(this.value);">
+            <option value="Sales">Sales</option>
+            <option value="Products">Products</option>
+            <option value="Customers">Customers</option>
+            <option value="Forecasts">Forecasts</option>
+            <option value="SBP">Sales by Product</option>
+        </select>
+    </div>
+    <div class="col">
+      <label for="window">Window Type</label>
+      <select name="window" id="window" class="form-control form-control-sm" onchange="changecat1(this.value);">
+          <option value="N">N/A</option>
+          <option value="M">Month</option>
+          <option value="Q">Quarter</option>
+          <option value="Y">Year</option>
+      </select>
+    </div>
+    <div class="col">
+      <label for="timeframe">Timeframe</label>
+      <select name="timeframe" id="timeframe" class="form-control form-control-sm">
+          <option value="">N/A</option>
+      </select>
+    </div>
+    <div class="col">
+      <label for="year">Year</label>
+      <select name="year" id="year" class="form-control form-control-sm">
+          <option value="All">All</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+      </select>
+    </div>
+    <div class="col">
+        <label for="state">State</label>
+        <select id="state" name="state" class="form-control form-control-sm">
+            <option>N/A</option>
+            <option>Ohio</option>
+            <option>Arizona</option>
+            <option>California</option>
+            <option>Texas</option>
+            <option>Florida</option>
+            <option>New York</option>
+        </select>
+    </div>
+    <div class="col">
+        <label for="sex">Sex</label>
+        <select id="sex" name="sex" class="form-control form-control-sm">
+            <option>N/A</option>
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+    </div>
+    <div class="col">
+        <button type="submit" class="btn btn-primary btn" form="tabularform" style="height: 100%">Apply Changes</button>
+    </div>
+</div></form></center>
 <script>
     var windowByFrame = {
         N:["N/A"],
         M:["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         Q:["First Quarter", "Second Quarter", "Third Quarter", "Fourth Quarter"],
-        Y:["2020", "2021", "2022", "All"]
+        Y:[""]
     }
 
-    function changecat(value) {
+    var state = {
+        Sales:["N/A", "Ohio", "Arizona", "California", "Texas", "Florida", "New York"],
+        Products:["N/A"],
+        Customers:["N/A", "Ohio", "Arizona", "California", "Texas", "Florida", "New York"],
+        Forecasts:["N/A"],
+        SBP:["N/A"]
+    }
+
+    var sex = {
+        Sales:["N/A", "Male", "Female"],
+        Products:["N/A"],
+        Customers:["N/A", "Male", "Female"],
+        Forecasts:["N/A"],
+        SBP:["N/A"]
+    }
+
+    function changecat1(value) {
         if (value.length == 0) document.getElementById("timeframe").innerHTML = "<option></option>";
         else {
             var catOptions = "";
@@ -94,11 +139,30 @@
             document.getElementById("timeframe").innerHTML = catOptions;
         }
     }
+
+    function changecat2(value) {
+        if (value.length == 0) document.getElementById("state").innerHTML = "<option></option>";
+        else {
+            var catOptions = "";
+            for (categoryId in state[value]) {
+                catOptions += "<option>" + state[value][categoryId] + "</option>";
+            }
+            document.getElementById("state").innerHTML = catOptions;
+        }
+        if (value.length == 0) document.getElementById("sex").innerHTML = "<option></option>";
+        else {
+            var catOptions = "";
+            for (categoryId in sex[value]) {
+                catOptions += "<option>" + sex[value][categoryId] + "</option>";
+            }
+            document.getElementById("sex").innerHTML = catOptions;
+        }
+    }
 </script>
     <!-- overall chart div -->
     <div class="overall">
         <div class="row mainrow">
-            <div class="col">
+            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
                 <center><h2>Gross Margin</h2></center>
                 <br>
                 <center><h6>Current Period: ${{curgroMar}}</h6></center>
@@ -106,47 +170,51 @@
                 <div id="chart2" class="chart"></div>
             </div>
             <div class="col">
-                <h3>Revenue</h3>
-                <table class="table">
+                <div style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
+                <h3 style="margin: 10px 10px 10px 10px">Revenue</h3>
+                <table class="table" style="margin: 10px 10px 10px 10px">
                     <tr>
-                        <th>Revenue Stream</th>
-                        <th>Revenue Generated</th>
+                        <th style="width: 40px">Revenue Stream</th>
+                        <th style="width: 40px">Revenue Generated</th>
                     </tr>
                     {% for r in revenues: %}
                     <tr>
-                        <td>{{ r[0] }}</td>
-                        <td>${{ r[1] }}</td>
+                        <td style="width: 40px">{{ r[0] }}</td>
+                        <td style="width: 40px">${{ r[1] }}</td>
                     </tr>
                     {% endfor %}
                     <tr>
-                        <td>Total Revenue & Gains</td>
-                        <td>${{ totalRevenue }}</td>
+                        <td style="width: 40px">Total Revenue & Gains</td>
+                        <td style="width: 40px">${{ totalRevenue }}</td>
                     </tr>                    
                 </table>
+                </div>
                 <br>
-                <h3>Expenses</h3>
-                <table class="table">
+                <div style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
+                <h3 style="margin: 10px 10px 10px 10px">Expenses</h3>
+                <table class="table" style="margin: 10px 10px 10px 10px">
                     <tr>
-                        <th>Expense</th>
-                        <th>Cost</th>
+                        <th style="width: 40px">Expense</th>
+                        <th style="width: 40px">Cost</th>
                     </tr>
                     {% for e in expenses: %}
                     <tr>
-                        <td>{{ e[0] }}</td>
-                        <td>${{ e[1] }}</td>
+                        <td style="width: 40px">{{ e[0] }}</td>
+                        <td style="width: 40px">${{ e[1] }}</td>
                     </tr>
                     {% endfor %}
                     <tr>
-                        <td>Total Expenses</td>
-                        <td>${{ totalExpenses }}</td>
+                        <td style="width: 40px">Total Expenses</td>
+                        <td style="width: 40px">${{ totalExpenses }}</td>
                     </tr>
                 </table>
                 <table class="table">
                     <tr>
-                        <th>Net Profit</th>
-                        <td>${{ netProfit }}</td>
+                        <th style="width: 40px">Net Profit</th>
+                        <td style="width: 40px">${{ netProfit }}</td>
                     </tr>
                 </table>
+                </div>
             </div>
         </div>
     </div>

@@ -43,11 +43,12 @@ def charts():
 
 @app.route('/tabular/', methods=["POST", "GET"])
 def tabular():
-    title = 'Sales in 2021'
+    title = 'Sales in 2020, 2021, and 2022'
     head = dh.allsales().columns
     vals = dh.allsales().values
     input_dict = {'month': '', 'quarter': '', 'year': '', 'sex': '', 'state': ''}
-    file = open('error.txt', 'w')
+    sales_dict = {}
+    for_dict = {}
     if request.method == 'POST':
         title = request.form['type']
         if 'timeframe' in request.form.keys():
@@ -69,20 +70,27 @@ def tabular():
                 input_dict['quarter'] = str(request.form['timeframe'])
         if request.form['state'] != 'N/A':
             input_dict['state'] = request.form['state']
+            title = title + ' in ' + request.form['state']
         else:
             input_dict['state'] = ''
         if request.form['sex'] != 'N/A':
             input_dict['sex'] = request.form['sex']
+            title = title + ' (' + request.form['sex'] + ')'
         else:
             input_dict['sex'] = ''
         input_dict['data'] = request.form['type']
-        df = dh.get_data(input_dict)
-        file.write(str(input_dict))
-        file.write(str(df))
-        file.close()
-        head = df.columns
-        vals = df.values
-    return render_template("TabularPage.html", title='Sales and Product Data', chartTitle=title, header=head, dat=vals)
+        if request.form['type'] == 'Sales':
+            sales_dict = dh.sales_data(input_dict)
+            df = dh.get_data(input_dict)
+            head = df.columns
+            vals = df.values
+        else:
+            df = dh.get_data(input_dict)
+            if request.form['type'] == 'Forecasts':
+                for_dict = dh.for_data(df, input_dict)
+            head = df.columns
+            vals = df.values
+    return render_template("TabularPage.html", title='Sales and Product Data', chartTitle=title, header=head, dat=vals, sales=sales_dict, forc=for_dict)
 
 
 @app.route('/inventory/', methods=["POST", "GET"])

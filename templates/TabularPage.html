@@ -1,7 +1,29 @@
 {% extends "base_template.html" %}
 {% block title %}Tabular View{% endblock %}
 {% block style %}
+.collapsible {
+  background-color: #25d2b8;
+  color: #414b49;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 25px;
+  border-radius: 15px;
+}
 
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
 {% endblock %}
 
 {% block navcontentcenter %}
@@ -126,6 +148,7 @@
 </script>
 <center><h3>{{chartTitle}}</h3></center>
 <center>
+    {% if 'Sales' not in chartTitle and 'Forecasts' not in chartTitle: %}
     <table class="table table-hover table-striped" style="margin: 20px 15% auto 15%; width: 70%;">
         <tr>
             {% for h in header: %}
@@ -140,7 +163,101 @@
         </tr>
         {% endfor %}
     </table>
+    {% elif 'Sales' in chartTitle: %}
+    <div class="row" style="width: 80%;">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+            <h3 style="margin-top: 35px">Total Revenue</h3>
+            <h4>${{sales['total']}}</h4>
+        </div>
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+            <h3 style="margin-top: 35px">Quantity Sold</h3>
+            <h4>{{sales['quan']}} items</h4>
+        </div>
+    </div>
+    <div class="row" style="width: 80%">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+            <h3 style="margin-top: 35px">Forecasted Revenue</h3>
+            <h4>${{sales['forc']}}</h4>
+        </div>
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+            <h3 style="margin-top: 35px">Top Selling Product Category</h3>
+            <h4>{{sales['cat']}}</h4>
+        </div>
+    </div>
+    <button type="button" class="collapsible" style="width: 60%; margin: 10px 10px 10px 10px;"><center>View Individual Sale Records</center></button>
+    <div class="content row">
+        <table class="table table-hover table-striped" style="margin: 20px 15% auto 15%; width: 70%;">
+        <tr>
+            {% for h in header: %}
+            <td>{{ h }}</td>
+            {% endfor %}
+        </tr>
+        {% for d in dat: %}
+        <tr>
+            {% for e in d: %}
+            <td>{{ e }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    {% elif 'Forecasts' in chartTitle: %}
+    <div class="row" style="width: 80%;">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+            <h3 style="margin-top: 35px">Predicted Revenue</h3>
+            <h4>${{forc['forS']}}</h4>
+        </div>
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+            <h3 style="margin-top: 35px">Actual Revenue</h3>
+            <h4>${{forc['actS']}}</h4>
+        </div>
+    </div>
+    <div class="row" style="width: 80%">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+            <h3 style="margin-top: 35px">Predicted Quantity Sold</h3>
+            <h4>{{forc['forQ']}} items</h4>
+        </div>
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+            <h3 style="margin-top: 35px">Actual Quantity Sold</h3>
+            <h4>{{forc['actQ']}} items</h4>
+        </div>
+    </div>
+    <button type="button" class="collapsible" style="width: 60%; margin: 10px 10px 10px 10px;"><center>View Forecasts by Product</center></button>
+    <div class="content row">
+        <table class="table table-hover table-striped" style="margin: 20px 15% auto 15%; width: 70%;">
+        <tr>
+            {% for h in header: %}
+            <td>{{ h }}</td>
+            {% endfor %}
+        </tr>
+        {% for d in dat: %}
+        <tr>
+            {% for e in d: %}
+            <td>{{ e }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    {% endif %}
 </center>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
 
 
 {% endblock %}
