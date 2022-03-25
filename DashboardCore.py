@@ -21,13 +21,30 @@ def home():
 
 @app.route('/charts/', methods=["POST", "GET"])
 def charts():
+    dynamic_title = 'Performance '
     if request.method == "POST":  # True if a form was submitted. Otherwise, the default homepage with default charts is given
         if 'product' not in request.form: # CASE: main chart update requested
             LeftMainGenerator.getdata(request.form)
             CenterMainGenerator.getdata(request.form)
             RightMainGenerator.getdata(request.form)
+            if 'timeframe' in request.form.keys():
+                if request.form['timeframe'] == 'All':
+                    dynamic_title = dynamic_title + " from 2020-2022"
+                    request.form['year'] = ''
+                else:
+                    dynamic_title = dynamic_title + " in " + request.form['timeframe']
+                    if request.form['year'] == 'All':
+                        dynamic_title = dynamic_title + " 2020, 2021, and 2022"
+                    else:
+                        dynamic_title = dynamic_title + ' ' + request.form['year']
+    else:
+        LeftMainGenerator.__init__('sales')
+        CenterMainGenerator.__init__('gromar')
+        RightMainGenerator.__init__('forecast')
+        dynamic_title = 'from 2020-2022'
 
-    return render_template("ChartPage.html", title='KPI Chart Analysis', topLeft=LeftMainGenerator.generatechart(), topRight=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), cursales=LeftMainGenerator.total_sales(), curgroMar=CenterMainGenerator.gross_margin(), forPer=RightMainGenerator.forecast_percent())
+
+    return render_template("ChartPage.html", dynamic_title=dynamic_title, title='KPI Chart Analysis', topLeft=LeftMainGenerator.generatechart(), topRight=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), cursales=LeftMainGenerator.total_sales(), curgroMar=CenterMainGenerator.gross_margin(), forPer=RightMainGenerator.forecast_percent())
 
 
 @app.route('/tabular/', methods=["POST", "GET"])
@@ -62,7 +79,16 @@ def tabular():
                 input_dict['month'] = str(datetime.strptime(request.form['timeframe'], "%B").month)
                 input_dict['quarter'] = ''
             if request.form['window'] == 'Q':
-                input_dict['quarter'] = str(request.form['timeframe'])
+                if request.form['timeframe'] == 'First Quarter':
+                    input_dict['quarter'] = 1
+                elif request.form['timeframe'] == 'Second Quarter':
+                    input_dict['quarter'] = 2
+                elif request.form['timeframe'] == 'Third Quarter':
+                    input_dict['quarter'] = 3
+                elif request.form['timeframe'] == 'Fourth Quarter':
+                    input_dict['quarter'] = 4
+                else:
+                    input_dict['quarter'] = 0
         if request.form['state'] != 'N/A':
             input_dict['state'] = request.form['state']
             title = title + ' in ' + request.form['state']

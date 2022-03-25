@@ -1,4 +1,4 @@
-import datetime as dt
+from datetime import datetime as dt
 import pandas as pd
 import json
 import plotly
@@ -19,6 +19,7 @@ class GraphGenerator:
     # the variable self.data will change in getdata() when a new query is run
     def __init__(self, position):
         self.position = position
+        self.input_dis = 'Hello'
         dh = DataHolder()
         if position == 'sales':
             # total sales throughout the year
@@ -95,14 +96,23 @@ class GraphGenerator:
         self.jsonFigure = json.dumps(self.figure, cls=plotly.utils.PlotlyJSONEncoder)
 
     def getdata(self, input_dict):
-        inputs = {'quarter': '', 'month': '', 'year': input_dict['year'], 'state': input_dict['state'], 'sex': input_dict['sex']}
+        inputs = {'quarter': '', 'month': '', 'year': input_dict['year'], 'state': '', 'sex': ''}
         if inputs['year'] == 'All':
             inputs['year'] = ''
         if 'timeframe' in input_dict:
             if input_dict['window'] == 'M':
                 inputs['month'] = str(dt.strptime(input_dict['timeframe'], "%B").month)
             if input_dict['window'] == 'Q':
-                inputs['quarter'] = str(input_dict['timeframe'])
+                if input_dict['timeframe'] == 'First Quarter':
+                    inputs['quarter'] = 1
+                elif input_dict['timeframe'] == 'Second Quarter':
+                    inputs['quarter'] = 2
+                elif input_dict['timeframe'] == 'Third Quarter':
+                    inputs['quarter'] = 3
+                elif input_dict['timeframe'] == 'Fourth Quarter':
+                    inputs['quarter'] = 4
+                else:
+                    inputs['quarter'] = 0
         dh = DataHolder()
         if self.position == 'sales':
             inputs['data'] = 'Sales'
@@ -158,6 +168,10 @@ class GraphGenerator:
                     (df_f['2022 FC Sales'].sum() / 12)))
                 else:
                     mon_for.append(int(df_f['Sales'].sum() / 12))
+                if inputs['month'] != '':
+                    if dt.strptime(inputs['month'], "%B").month != month:
+                        mon_for[-1] = 0
+                        mon_sal[-1] = 0
             self.for_per = sum(mon_sal) / sum(mon_for)
             df = pd.DataFrame({
                 'Month': mons,
@@ -178,8 +192,8 @@ class GraphGenerator:
                 xanchor="left",
                 x=0.01
             ))
+        self.input_dis = inputs
         self.jsonFigure = json.dumps(self.figure, cls=plotly.utils.PlotlyJSONEncoder)
-
 
     def generatechart(self):
         return self.jsonFigure
