@@ -40,7 +40,7 @@ def charts():
         LeftMainGenerator.__init__('sales')
         CenterMainGenerator.__init__('gromar')
         RightMainGenerator.__init__('forecast')
-        dynamic_title = 'from 2020-2022'
+        dynamic_title = dynamic_title + 'from 2020-2022'
 
 
     return render_template("ChartPage.html", dynamic_title=dynamic_title, title='KPI Chart Analysis', topLeft=LeftMainGenerator.generatechart(), topRight=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), cursales=LeftMainGenerator.total_sales(), curgroMar=CenterMainGenerator.gross_margin(), forPer=RightMainGenerator.forecast_percent())

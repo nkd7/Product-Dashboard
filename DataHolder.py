@@ -48,14 +48,14 @@ class DataHolder():
                 df = temp
             if m != '':
                 df = df[df['Order Date'].dt.month == int(m)]
-            elif quarter != '':
-                if quarter == '1':
+            elif quarter != 0:
+                if quarter == 1:
                     df = df[df['Order Date'].dt.month < 4]
-                elif quarter == '2':
+                elif quarter == 2:
                     df = df[(df['Order Date'].dt.month < 7) & (df['Order Date'].dt.month > 3)]
-                elif quarter == '3':
+                elif quarter == 3:
                     df = df[(df['Order Date'].dt.month < 10) & (df['Order Date'].dt.month > 6)]
-                elif quarter == '4':
+                elif quarter == 4:
                     df = df[df['Order Date'].dt.month > 9]
             df = pd.merge(df, self.customersrows, on='Customer ID')
             df = df[['Order Date', 'Order ID', 'Customer ID', 'Product ID', 'Quantity', 'Price', 'Customer City', 'Customer State', 'Sex']]
@@ -67,14 +67,14 @@ class DataHolder():
                 df = df[df['Order Date'].dt.year == int(y)]
             if m != '':
                 df = df[df['Order Date'].dt.month == int(m)]
-            elif quarter != '':
-                if quarter == '1':
+            elif quarter != 0:
+                if quarter == 1:
                     df = df[df['Order Date'].dt.month < 4]
-                elif quarter == '2':
+                elif quarter == 2:
                     df = df[(df['Order Date'].dt.month < 7) & (df['Order Date'].dt.month > 3)]
-                elif quarter == '3':
+                elif quarter == 3:
                     df = df[(df['Order Date'].dt.month < 10) & (df['Order Date'].dt.month > 6)]
-                elif quarter == '4':
+                elif quarter == 4:
                     df = df[df['Order Date'].dt.month > 9]
 
         elif data == 'Forecasts':

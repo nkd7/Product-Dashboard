@@ -48,16 +48,6 @@
 {% block content %}
 <center><form action="#" id="tabularform" name="tabularform" method="post" style="width: 50%; margin: 20px auto 20px auto;"><div class="row">
     <div class="col">
-        <label for="type">Data Type</label>
-        <select id="type" name="type" class="form-control form-control-sm" onchange="changecat2(this.value);">
-            <option value="Sales">Sales</option>
-            <option value="Products">Products</option>
-            <option value="Customers">Customers</option>
-            <option value="Forecasts">Forecasts</option>
-            <option value="SBP">Sales by Product</option>
-        </select>
-    </div>
-    <div class="col">
       <label for="window">Window Type</label>
       <select name="window" id="window" class="form-control form-control-sm" onchange="changecat1(this.value);">
           <option value="N">N/A</option>
@@ -80,26 +70,6 @@
           <option value="2021">2021</option>
           <option value="2022">2022</option>
       </select>
-    </div>
-    <div class="col">
-        <label for="state">State</label>
-        <select id="state" name="state" class="form-control form-control-sm">
-            <option>N/A</option>
-            <option>Ohio</option>
-            <option>Arizona</option>
-            <option>California</option>
-            <option>Texas</option>
-            <option>Florida</option>
-            <option>New York</option>
-        </select>
-    </div>
-    <div class="col">
-        <label for="sex">Sex</label>
-        <select id="sex" name="sex" class="form-control form-control-sm">
-            <option>N/A</option>
-            <option>Male</option>
-            <option>Female</option>
-        </select>
     </div>
     <div class="col">
         <button type="submit" class="btn btn-primary btn" form="tabularform" style="height: 100%">Apply Changes</button>
