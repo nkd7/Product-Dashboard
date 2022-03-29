@@ -165,7 +165,7 @@ class DataHolder():
     def get_data(self, inputs):
         df = self.time_filter(quarter=inputs['quarter'], m=inputs['month'], y=inputs['year'], data=inputs['data'])
         if inputs['data'] in ['Sales', 'Customers']:
-            df = df = self.demographic_filter(state=inputs['state'], sex=inputs['sex'], data=df)
+            df = self.demographic_filter(state=inputs['state'], sex=inputs['sex'], data=df)
         return df
 
     def sales_data(self, sales_dict):
