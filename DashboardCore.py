@@ -18,7 +18,6 @@ dh = DataHolder()
 def home():
     return render_template("HomePage.html", page_title='KPI Analysis Dashboard')
 
-
 @app.route('/charts/', methods=["POST", "GET"])
 def charts():
     dynamic_title = 'Performance '

@@ -5,6 +5,7 @@ import pandas as pd
 import datetime as dt
 from math import ceil
 import random
+import numpy as np
 
 
 class DataHolder():
@@ -213,3 +214,52 @@ class DataHolder():
         df = df[['Order Date', 'Product ID', 'Quantity', 'Price', 'Product_name', 'Product_Price', 'Product_CostPrice']]
         df['COGS'] = df['Quantity'] * df['Product_CostPrice']
         return df[['COGS', 'Product ID', 'Quantity', 'Order Date', 'Price']]
+
+    # Function that calculates the sale based on region. Regions include West, Midwast, Southwest, Northeast, and Southeast
+    # self:
+    #       this current object
+    # region: String
+    #       Must be "west", "midwest", "southwest", "northeast", or "southeast"
+    def get_region_rev(self, region):
+        
+        # Merge sales with customers to get access to "Quantity", "Price", and "Customer State". Then drop unnecessary columns.
+        df = self.allsales()
+        df = pd.merge(df, self.customersrows) 
+        df.drop(["Order Date", "Order ID", "Customer Name", "Customer ID", "Product ID", "Customer Last Name", "Customer Contact no", "Customer Address", "Customer City", "Sex"], inplace=True, axis=1)
+        
+        # Create new column for "Sale". Sale = Quantity * Price. Then, create a series that contains total sales by state.
+        df['Sale'] = df["Quantity"] * df["Price"]
+        series = df.groupby("Customer State")["Sale"].sum()
+
+        west = ["Washington", "Oregon", "California", "Idaho", "Utah", "Nevada", "Montana", "Wyoming", "Colorado", "Alaska", "Hawaii"]
+        mid_west = ["North Dakota", "South Dakota", "Nebraska", "Kansas", "Minnesota", "Iowa", "Missouri", "Wisconsin", "Illinois", "Michigan", "Indiana", "Ohio"]
+        south_west = ["Arizona", "New Mexico", "Texas", "Oklahoma"]
+        north_east = ["Maine", "New Hampshire", "Vermont", "Massachusetts", "New York", "Rhode Island", "Connecticut", "New Jersey", "Pennsylvania", "Delaware", "Maryland"]
+        south_east = ["West Virginia", "Kentucky", "Virginia", "Arkansas", "Tennessee", "North Carolina", "South Carolina", "Mississippi", "Alabama", "Georgia", "Louisiana", "Florida"]
+
+        # Sum sales for each state based on region
+        regional_sales = 0
+        if region == "west":
+            for state, sale in series.items():
+                if state in west:
+                    regional_sales += sale
+        elif region == "midwest":
+            for state, sale in series.items():
+                if state in mid_west:
+                    regional_sales += sale
+        elif region == "southwest":
+            for state, sale in series.items():
+                if state in south_west:
+                    regional_sales += sale
+        elif region == "northeast":
+            for state, sale in series.items():
+                if state in north_east:
+                    regional_sales += sale
+        elif region == "southeast":
+            for state, sale in series.items():
+                if state in south_east:
+                    regional_sales += sale
+        else:
+            print("Error: Region is non-recognizable. Please choose from 'west', 'midwest', 'southwest', 'northeast', or 'southeast'.")
+
+        return regional_sales
