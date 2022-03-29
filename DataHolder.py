@@ -126,20 +126,21 @@ class DataHolder():
                 if m != '':
                     temp_sales = self.salesrows[self.salesrows['Order Date'].dt.month == int(m)]
                     temp = temp_sales[temp_sales['Order Date'].dt.year == int(y)]
-                if quarter != '':
-                    if quarter == '1':
+                elif quarter != 0:
+                    if quarter == 1:
                         temp_sales = self.salesrows[self.salesrows['Order Date'].dt.month < 4]
                         temp = temp_sales[temp_sales['Order Date'].dt.month < 4]
-                    elif quarter == '2':
+                    elif quarter == 2:
                         temp_sales = self.salesrows[(self.salesrows['Order Date'].dt.month < 7) & (self.salesrows['Order Date'].dt.month > 3)]
                         temp = temp_sales[(temp_sales['Order Date'].dt.month < 7) & (temp_sales['Order Date'].dt.month > 3)]
-                    elif quarter == '3':
+                    elif quarter == 3:
                         temp_sales = self.salesrows[(self.salesrows['Order Date'].dt.month < 10) & (self.salesrows['Order Date'].dt.month > 6)]
                         temp = temp_sales[(temp_sales['Order Date'].dt.month < 10) & (temp_sales['Order Date'].dt.month > 6)]
-                    elif quarter == '4':
+                    elif quarter == 4:
                         temp_sales = self.salesrows[self.salesrows['Order Date'].dt.month > 9]
                         temp = temp_sales[temp_sales['Order Date'].dt.month > 9]
-                df = temp
+                else:
+                    df = temp
 
         elif data == 'Products':
             df = self.productsrows
