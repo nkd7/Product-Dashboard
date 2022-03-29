@@ -18,7 +18,6 @@ dh = DataHolder()
 def home():
     return render_template("HomePage.html", page_title='KPI Analysis Dashboard')
 
-
 @app.route('/charts/', methods=["POST", "GET"])
 def charts():
     if request.method == "POST":  # True if a form was submitted. Otherwise, the default homepage with default charts is given
