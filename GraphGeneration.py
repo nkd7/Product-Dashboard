@@ -59,6 +59,7 @@ class GraphGenerator:
         elif position == 'forecast':
             # forecast vs actual
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            mon_dict = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec'}
             mon_sal = []
             mon_for = []
             df_s = dh.salesrows
@@ -66,7 +67,10 @@ class GraphGenerator:
             self.for_per = 0
             for month in mons:
                 mon_sal.append(int(df_s[df_s['Order Date'].dt.month == month]['Price'].sum()))
-                mon_for.append(int((df_f['2020 FC Sales'].sum() / 12)) + int((df_f['2021 FC Sales'].sum() / 12)) + int((df_f['2022 FC Sales'].sum() / 12)))
+                mon_cols = [col for col in df_f.columns if mon_dict[month] in col]
+                mon_cols = [col for col in mon_cols if 'Sales' in col]
+                temp_df = df_f[mon_cols]
+                mon_for.append(temp_df.sum().sum())
             self.for_per = sum(mon_sal) / sum(mon_for)
             df = pd.DataFrame({
                 'Month': mons,
