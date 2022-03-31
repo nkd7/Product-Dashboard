@@ -2,10 +2,6 @@ import warnings
 
 warnings.simplefilter(action='ignore', category=Warning)
 import pandas as pd
-import datetime as dt
-from math import ceil
-import random
-import numpy as np
 
 
 class DataHolder():
@@ -78,61 +74,88 @@ class DataHolder():
             if y != '':
                 y_cols = ['Product_Id']
                 if y == '2020':
-                    y_cols.append([col for col in df.columns if '2020' in col])
+                    for col in df.columns:
+                        if '2020' in col:
+                            y_cols.append(col)
                 elif y == '2021':
-                    y_cols.append([col for col in df.columns if '2021' in col])
+                    for col in df.columns:
+                        if '2021' in col:
+                            y_cols.append(col)
                 elif y == '2022':
-                    y_cols.append([col for col in df.columns if '2022' in col])
+                    for col in df.columns:
+                        if '2022' in col:
+                            y_cols.append(col)
                 df = df[y_cols]
-
             if m != '':
                 m_cols = ['Product_Id']
                 if m == '1':
-                    m_cols.append([col for col in df.columns if 'Jan' in col])
+                    for col in df.columns:
+                        if 'Jan' in col:
+                            m_cols.append(col)
                 elif m == '2':
-                    m_cols.append([col for col in df.columns if 'Feb' in col])
+                    for col in df.columns:
+                        if 'Feb' in col:
+                            m_cols.append(col)
                 elif m == '3':
-                    m_cols.append([col for col in df.columns if 'Mar' in col])
+                    for col in df.columns:
+                        if 'Mar' in col:
+                            m_cols.append(col)
                 elif m == '4':
-                    m_cols.append([col for col in df.columns if 'Apr' in col])
+                    for col in df.columns:
+                        if 'Apr' in col:
+                            m_cols.append(col)
                 elif m == '5':
-                    m_cols.append([col for col in df.columns if 'May' in col])
+                    for col in df.columns:
+                        if 'May' in col:
+                            m_cols.append(col)
                 elif m == '6':
-                    m_cols.append([col for col in df.columns if 'June' in col])
+                    for col in df.columns:
+                        if 'June' in col:
+                            m_cols.append(col)
                 elif m == '7':
-                    m_cols.append([col for col in df.columns if 'July' in col])
+                    for col in df.columns:
+                        if 'July' in col:
+                            m_cols.append(col)
                 elif m == '8':
-                    m_cols.append([col for col in df.columns if 'Aug' in col])
+                    for col in df.columns:
+                        if 'Aug' in col:
+                            m_cols.append(col)
                 elif m == '9':
-                    m_cols.append([col for col in df.columns if 'Sept' in col])
+                    for col in df.columns:
+                        if 'Sept' in col:
+                            m_cols.append(col)
                 elif m == '10':
-                    m_cols.append([col for col in df.columns if 'Oct' in col])
+                    for col in df.columns:
+                        if 'Oct' in col:
+                            m_cols.append(col)
                 elif m == '11':
-                    m_cols.append([col for col in df.columns if 'Nov' in col])
+                    for col in df.columns:
+                        if 'Nov' in col:
+                            m_cols.append(col)
                 elif m == '12':
-                    m_cols.append([col for col in df.columns if 'Dec' in col])
+                    for col in df.columns:
+                        if 'Dec' in col:
+                            m_cols.append(col)
                 df = df[m_cols]
-
             if quarter != 0:
                 q_cols = ['Product_Id']
                 if quarter == 1:
-                    q_cols.append([col for col in df.columns if 'Jan' in col])
-                    q_cols.append([col for col in df.columns if 'Feb' in col])
-                    q_cols.append([col for col in df.columns if 'Mar' in col])
+                    for col in df.columns:
+                        if 'Jan' in col or 'Feb' in col or 'Mar' in col:
+                            q_cols.append(col)
                 elif quarter == 2:
-                    q_cols.append([col for col in df.columns if 'Apr' in col])
-                    q_cols.append([col for col in df.columns if 'May' in col])
-                    q_cols.append([col for col in df.columns if 'June' in col])
+                    for col in df.columns:
+                        if 'Apr' in col or 'May' in col or 'June' in col:
+                            q_cols.append(col)
                 elif quarter == 3:
-                    q_cols.append([col for col in df.columns if 'July' in col])
-                    q_cols.append([col for col in df.columns if 'Aug' in col])
-                    q_cols.append([col for col in df.columns if 'Sept' in col])
+                    for col in df.columns:
+                        if 'July' in col or 'Aug' in col or 'Sept' in col:
+                            q_cols.append(col)
                 elif quarter == 4:
-                    q_cols.append([col for col in df.columns if 'Oct' in col])
-                    q_cols.append([col for col in df.columns if 'Nov' in col])
-                    q_cols.append([col for col in df.columns if 'Dec' in col])
+                    for col in df.columns:
+                        if 'Oct' in col or 'Nov' in col or 'Dec' in col:
+                            q_cols.append(col)
                 df = df[q_cols]
-
         elif data == 'Products':
             df = self.productsrows
 

@@ -51,7 +51,7 @@ def tabular():
     title = 'Sales in 2020, 2021, and 2022'
     head = None
     vals = None
-    input_dict = {'month': '', 'quarter': '', 'year': '', 'sex': '', 'state': '', 'data': ''}
+    input_dict = {'month': '', 'quarter': 0, 'year': '', 'sex': '', 'state': '', 'data': ''}
     sales_dict = {}
     for_dict = {}
     if request.method == 'GET':
@@ -76,7 +76,7 @@ def tabular():
                     input_dict['year'] = request.form['year']
             if request.form['window'] == 'M':
                 input_dict['month'] = str(datetime.strptime(request.form['timeframe'], "%B").month)
-                input_dict['quarter'] = ''
+                input_dict['quarter'] = 0
             if request.form['window'] == 'Q':
                 if request.form['timeframe'] == 'First Quarter':
                     input_dict['quarter'] = 1
