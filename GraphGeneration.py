@@ -18,6 +18,7 @@ class GraphGenerator:
     # couple random ones for now)
     # the variable self.data will change in getdata() when a new query is run
     def __init__(self, position):
+        self.for_per = 0
         self.position = position
         self.input_dis = 'Hello'
         dh = DataHolder()
@@ -56,7 +57,7 @@ class GraphGenerator:
                 'Gross Margin': mon_gross
             })
             self.figure = px.bar(self.data, x='Month', y='Gross Margin')
-        elif position == 'forecast':
+        elif position == 'forecasts':
             # forecast vs actual
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
             mon_dict = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec'}
@@ -100,7 +101,7 @@ class GraphGenerator:
         self.jsonFigure = json.dumps(self.figure, cls=plotly.utils.PlotlyJSONEncoder)
 
     def getdata(self, input_dict):
-        inputs = {'quarter': '', 'month': '', 'year': input_dict['year'], 'state': '', 'sex': ''}
+        inputs = {'quarter': 0, 'month': '', 'year': input_dict['year'], 'state': '', 'sex': ''}
         if inputs['year'] == 'All':
             inputs['year'] = ''
         if 'timeframe' in input_dict:
@@ -158,24 +159,25 @@ class GraphGenerator:
         elif self.position == 'forecasts':
             # forecast vs actual
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            mon_dict = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept',
+                        10: 'Oct', 11: 'Nov', 12: 'Dec'}
             mon_sal = []
             mon_for = []
             inputs['data'] = 'Sales'
             df_s = dh.get_data(inputs)
+            file = open('log3.txt', 'w')
+            file.write('df_s' + str(df_s))
             inputs['data'] = 'Forecasts'
             df_f = dh.get_data(inputs)
+            file.write('df_f' + str(df_f))
+            file.close()
             self.for_per = 0
             for month in mons:
                 mon_sal.append(int(df_s[df_s['Order Date'].dt.month == month]['Price'].sum()))
-                if inputs['year'] == '':
-                    mon_for.append(int((df_f['2020 FC Sales'].sum() / 12)) + int((df_f['2021 FC Sales'].sum() / 12)) + int(
-                    (df_f['2022 FC Sales'].sum() / 12)))
-                else:
-                    mon_for.append(int(df_f['Sales'].sum() / 12))
-                if inputs['month'] != '':
-                    if dt.strptime(inputs['month'], "%B").month != month:
-                        mon_for[-1] = 0
-                        mon_sal[-1] = 0
+                mon_cols = [col for col in df_f.columns if mon_dict[month] in col]
+                mon_cols = [col for col in mon_cols if 'Sales' in col]
+                temp_df = df_f[mon_cols]
+                mon_for.append(temp_df.sum().sum())
             self.for_per = sum(mon_sal) / sum(mon_for)
             df = pd.DataFrame({
                 'Month': mons,
@@ -193,8 +195,8 @@ class GraphGenerator:
             self.figure.update_layout(legend=dict(
                 yanchor="top",
                 y=0.99,
-                xanchor="left",
-                x=0.01
+                xanchor="right",
+                x=0.99
             ))
         self.input_dis = inputs
         self.jsonFigure = json.dumps(self.figure, cls=plotly.utils.PlotlyJSONEncoder)
