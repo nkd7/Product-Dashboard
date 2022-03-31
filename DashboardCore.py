@@ -39,9 +39,8 @@ def charts():
     else:
         LeftMainGenerator.__init__('sales')
         CenterMainGenerator.__init__('gromar')
-        RightMainGenerator.__init__('forecast')
+        RightMainGenerator.__init__('forecasts')
         dynamic_title = dynamic_title + 'from 2020-2022'
-
 
     return render_template("ChartPage.html", dynamic_title=dynamic_title, title='KPI Chart Analysis', topLeft=LeftMainGenerator.generatechart(), topRight=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), cursales=LeftMainGenerator.total_sales(), curgroMar=CenterMainGenerator.gross_margin(), forPer=RightMainGenerator.forecast_percent())
 
@@ -124,15 +123,18 @@ def sales():
 
     return render_template('sales.html', title='Sales', sales_chart=LeftMainGenerator.generatechart(), top_prods=[['Product A', 1332], ['Product D', 1298], ['Product H', 1209], ['Product C', 1108], ['Product D', 1067]], top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
 
+
 @app.route('/GM/', methods=["POST", "GET"])
 def grossMargin():
 
     return render_template('GrossMargin.html', title='Gross Margin', gm_chart=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), revenues=[['Product Category 1', 200000], ['Product Category 2', 300000], ['Product Category 3', 100000], ['Product Category 4', 200000], ['Product Category 5', 200000]], expenses=[['Expense 1', 150000], ['Expense 2', 150000], ['Expense 3', 50000], ['Expense 4', 100000], ['Expense 5', 50000]], totalRevenue="1000000", totalExpenses="500000", netProfit ="500000", cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
 
+
 @app.route('/FvA/', methods=["POST", "GET"])
 def ForecastVsActual():
 
     return render_template('ForecastVsActual.html', title='Forecast vs. Actual', fva_chart=RightMainGenerator.generatechart(), top_prods=[['Product A', 1332], ['Product D', 1298], ['Product H', 1209], ['Product C', 1108], ['Product D', 1067]], top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102", forPer="+12.4%")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
