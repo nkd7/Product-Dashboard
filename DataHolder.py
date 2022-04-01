@@ -243,7 +243,6 @@ class DataHolder():
                 
         # Create new column for "Sale". Sale = Quantity * Price. Then, create a series that contains total sales by state.
         df['Sale'] = df["Quantity"] * df["Price"]
-        print(df)
         series = df.groupby("Customer State_y")["Sale"].sum()
 
         west = ["Washington", "Oregon", "California", "Idaho", "Utah", "Nevada", "Montana", "Wyoming", "Colorado", "Alaska", "Hawaii"]
@@ -288,7 +287,6 @@ class DataHolder():
         # Create new column for "Sale". Sale = Quantity * Price. Then, create a series that contains total sales by state.
         df = pd.merge(df, self.productsrows, on='Product ID')
         df['COGS'] = df['Quantity'] * df['Product_CostPrice']
-        print(df.columns)
         series = df.groupby("Customer State_x")["COGS"].sum()
 
         west = ["Washington", "Oregon", "California", "Idaho", "Utah", "Nevada", "Montana", "Wyoming", "Colorado", "Alaska", "Hawaii"]

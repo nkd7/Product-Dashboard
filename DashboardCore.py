@@ -120,8 +120,17 @@ def inventory():
 
 @app.route('/sales/', methods=["POST", "GET"])
 def sales():
+    regions = ['west', 'midwest', 'southwest', 'northeast', 'southeast']
+    region_rev = []
 
-    return render_template('sales.html', title='Sales', sales_chart=LeftMainGenerator.generatechart(), top_prods=[['Product A', 1332], ['Product D', 1298], ['Product H', 1209], ['Product C', 1108], ['Product D', 1067]], top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
+    if request.method == 'GET':
+        for region in regions:
+            region_rev.append([region, dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')])
+    else:
+        for region in regions:
+            region_rev.append([region, dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')])
+
+    return render_template('sales.html', title='Sales', sales_chart=LeftMainGenerator.generatechart(), top_prods=region_rev, top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
 
 
 @app.route('/GM/', methods=["POST", "GET"])
@@ -129,17 +138,26 @@ def grossMargin():
     regions = ['west', 'midwest', 'southwest', 'northeast', 'southeast']
     rev = []
     exp = []
-    print(b"Request Data = " + request.get_data())
+    total_rev = 0
+    total_exp = 0
+    net_prof = 0
+
     if request.method == 'GET':
         for region in regions:
+            total_rev += dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')
             rev.append([region, dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')])
+            total_exp += dh.get_regional_cogs(region, m='', quarter=0, y='', data='Sales')
             exp.append([region, dh.get_regional_cogs(region, m='', quarter=0, y='', data='Sales')])
     else:
         for region in regions:
+            total_rev += dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')
             rev.append([region, dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')])
+            total_exp += dh.get_regional_cogs(region, m='', quarter=0, y='', data='Sales')
             exp.append([region, dh.get_regional_cogs(region, m='', quarter=0, y='', data='Sales')])
 
-    return render_template('GrossMargin.html', title='Gross Margin', gm_chart=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), revenues=rev,  expenses=exp, netProfit ="500000", cursales="", prevsales="", curgroMar="8,320", prevgroMar="6,102")
+    net_prof = total_rev - total_exp
+
+    return render_template('GrossMargin.html', title='Gross Margin', gm_chart=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), revenues=rev, totalRevenue=total_rev, totalExpenses=total_exp,  expenses=exp, netProfit=net_prof)
 
 
 @app.route('/FvA/', methods=["POST", "GET"])
