@@ -26,7 +26,7 @@ class DataHolder():
         return self.forecastsrows
 
     # m: 1-12 as a string
-    # quarter: 1-4 as a string
+    # quarter: 1-4 as an int
     # y: 2020, 2021, or 2022 as a string
     # data: Sales, Customers, Products, or Forecasts as a string
     def time_filter(self, m='', quarter='', y='', data=''):
@@ -49,7 +49,7 @@ class DataHolder():
                     df = df[(df['Order Date'].dt.month < 10) & (df['Order Date'].dt.month > 6)]
                 elif quarter == 4:
                     df = df[df['Order Date'].dt.month > 9]
-            df = pd.merge(df, self.customersrows, on='Customer ID')
+            df = df.merge(right=self.customersrows, how='left', on='Customer ID')
             df = df[['Order Date', 'Order ID', 'Customer ID', 'Product ID', 'Quantity', 'Price', 'Customer City', 'Customer State', 'Sex']]
 
         elif data == 'Customers':

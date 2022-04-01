@@ -87,8 +87,8 @@ class GraphGenerator:
             self.figure.update_xaxes(title_text='Month')
             self.figure.update_yaxes(title_text='Amount ($)')
             self.figure.update_layout(legend=dict(
-                yanchor="top",
-                y=0.99,
+                yanchor="bottom",
+                y=0.01,
                 xanchor="left",
                 x=0.01
             ))
@@ -165,12 +165,8 @@ class GraphGenerator:
             mon_for = []
             inputs['data'] = 'Sales'
             df_s = dh.get_data(inputs)
-            file = open('log3.txt', 'w')
-            file.write('df_s' + str(df_s))
             inputs['data'] = 'Forecasts'
             df_f = dh.get_data(inputs)
-            file.write('df_f' + str(df_f))
-            file.close()
             self.for_per = 0
             for month in mons:
                 mon_sal.append(int(df_s[df_s['Order Date'].dt.month == month]['Price'].sum()))
@@ -193,10 +189,10 @@ class GraphGenerator:
             self.figure.update_xaxes(title_text='Month')
             self.figure.update_yaxes(title_text='Amount ($)')
             self.figure.update_layout(legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="right",
-                x=0.99
+                yanchor="bottom",
+                y=0.01,
+                xanchor="left",
+                x=0.01
             ))
         self.input_dis = inputs
         self.jsonFigure = json.dumps(self.figure, cls=plotly.utils.PlotlyJSONEncoder)
