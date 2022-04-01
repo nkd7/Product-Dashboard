@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from GraphGeneration import GraphGenerator
 from DataHolder import DataHolder
 
@@ -16,7 +16,7 @@ dh = DataHolder()
 
 @app.route('/', methods=["POST", "GET"])
 def home():
-    return render_template("HomePage.html", page_title='KPI Analysis Dashboard')
+    return redirect("/charts/")
 
 @app.route('/charts/', methods=["POST", "GET"])
 def charts():
