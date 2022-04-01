@@ -233,7 +233,7 @@ class DataHolder():
     #       this current object
     # region: String
     #       Must be "west", "midwest", "southwest", "northeast", or "southeast"
-    def get_region_rev(self, region):
+    def get_region_rev(self, region, m='', quarter='', y='', data=''):
         
         # Merge sales with customers to get access to "Quantity", "Price", and "Customer State". Then drop unnecessary columns.
         df = self.allsales()
