@@ -159,7 +159,7 @@ class DataHolder():
         elif data == 'Products':
             df = self.productsrows
 
-        return self.declutter(df, data)
+        return df
 
     # state: valid state in the US
     # sex: male or female
@@ -196,9 +196,9 @@ class DataHolder():
 
     def declutter(self, data, table):
         if table == 'Sales':
-            data = data[['Order Date', 'Product ID', 'Quantity', 'Price', 'Customer City', 'Customer State', 'Sex']]
+            data = data[['Order Date', 'Customer ID', 'Product ID', 'Quantity', 'Price', 'Customer City', 'Customer State', 'Sex']]
         elif table == 'Customers':
-            data = data[['Customer Name', 'Customer Last Name', 'Customer City', 'Customer State', 'Sex']]
+            data = data[['Customer Name', 'Customer Last Name', 'Customer ID', 'Customer City', 'Customer State', 'Sex']]
             data = data.drop_duplicates(subset=['Customer Last Name'])
         elif table == 'Sale by Product':
             x = 1
@@ -236,13 +236,15 @@ class DataHolder():
     def get_region_rev(self, region, m='', quarter='', y='', data=''):
         
         # Merge sales with customers to get access to "Quantity", "Price", and "Customer State". Then drop unnecessary columns.
-        df = self.allsales()
-        df = pd.merge(df, self.customersrows) 
-        df.drop(["Order Date", "Order ID", "Customer Name", "Customer ID", "Product ID", "Customer Last Name", "Customer Contact no", "Customer Address", "Customer City", "Sex"], inplace=True, axis=1)
-        
+        df = self.time_filter(m=m, quarter=quarter, y=y, data='Sales')
+    
+        print(self.customersrows)
+        df = pd.merge(df, self.customersrows, on='Customer ID')
+                
         # Create new column for "Sale". Sale = Quantity * Price. Then, create a series that contains total sales by state.
         df['Sale'] = df["Quantity"] * df["Price"]
-        series = df.groupby("Customer State")["Sale"].sum()
+        print(df)
+        series = df.groupby("Customer State_y")["Sale"].sum()
 
         west = ["Washington", "Oregon", "California", "Idaho", "Utah", "Nevada", "Montana", "Wyoming", "Colorado", "Alaska", "Hawaii"]
         mid_west = ["North Dakota", "South Dakota", "Nebraska", "Kansas", "Minnesota", "Iowa", "Missouri", "Wisconsin", "Illinois", "Michigan", "Indiana", "Ohio"]
@@ -276,3 +278,48 @@ class DataHolder():
             print("Error: Region is non-recognizable. Please choose from 'west', 'midwest', 'southwest', 'northeast', or 'southeast'.")
 
         return regional_sales
+
+    def get_regional_cogs(self, region, m='', quarter='', y='', data=''):
+        
+        # Merge sales with customers to get access to "Quantity", "Price", and "Customer State". Then drop unnecessary columns.
+        df = self.time_filter(m=m, quarter=quarter, y=y, data='Sales')
+        df = pd.merge(df, self.customersrows, on='Customer ID') 
+                
+        # Create new column for "Sale". Sale = Quantity * Price. Then, create a series that contains total sales by state.
+        df = pd.merge(df, self.productsrows, on='Product ID')
+        df['COGS'] = df['Quantity'] * df['Product_CostPrice']
+        print(df.columns)
+        series = df.groupby("Customer State_x")["COGS"].sum()
+
+        west = ["Washington", "Oregon", "California", "Idaho", "Utah", "Nevada", "Montana", "Wyoming", "Colorado", "Alaska", "Hawaii"]
+        mid_west = ["North Dakota", "South Dakota", "Nebraska", "Kansas", "Minnesota", "Iowa", "Missouri", "Wisconsin", "Illinois", "Michigan", "Indiana", "Ohio"]
+        south_west = ["Arizona", "New Mexico", "Texas", "Oklahoma"]
+        north_east = ["Maine", "New Hampshire", "Vermont", "Massachusetts", "New York", "Rhode Island", "Connecticut", "New Jersey", "Pennsylvania", "Delaware", "Maryland"]
+        south_east = ["West Virginia", "Kentucky", "Virginia", "Arkansas", "Tennessee", "North Carolina", "South Carolina", "Mississippi", "Alabama", "Georgia", "Louisiana", "Florida"]
+
+        # Sum sales for each state based on region
+        COGS = 0
+        if region == "west":
+            for state, sale in series.items():
+                if state in west:
+                    COGS += sale
+        elif region == "midwest":
+            for state, sale in series.items():
+                if state in mid_west:
+                    COGS += sale
+        elif region == "southwest":
+            for state, sale in series.items():
+                if state in south_west:
+                    COGS += sale
+        elif region == "northeast":
+            for state, sale in series.items():
+                if state in north_east:
+                    COGS += sale
+        elif region == "southeast":
+            for state, sale in series.items():
+                if state in south_east:
+                    COGS += sale
+        else:
+            print("Error: Region is non-recognizable. Please choose from 'west', 'midwest', 'southwest', 'northeast', or 'southeast'.")
+
+        return COGS

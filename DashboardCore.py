@@ -126,8 +126,20 @@ def sales():
 
 @app.route('/GM/', methods=["POST", "GET"])
 def grossMargin():
+    regions = ['west', 'midwest', 'southwest', 'northeast', 'southeast']
+    rev = []
+    exp = []
+    print(b"Request Data = " + request.get_data())
+    if request.method == 'GET':
+        for region in regions:
+            rev.append([region, dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')])
+            exp.append([region, dh.get_regional_cogs(region, m='', quarter=0, y='', data='Sales')])
+    else:
+        for region in regions:
+            rev.append([region, dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')])
+            exp.append([region, dh.get_regional_cogs(region, m='', quarter=0, y='', data='Sales')])
 
-    return render_template('GrossMargin.html', title='Gross Margin', gm_chart=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), revenues=[['Product Category 1', 200000], ['Product Category 2', 300000], ['Product Category 3', 100000], ['Product Category 4', 200000], ['Product Category 5', 200000]], expenses=[['Expense 1', 150000], ['Expense 2', 150000], ['Expense 3', 50000], ['Expense 4', 100000], ['Expense 5', 50000]], totalRevenue="1000000", totalExpenses="500000", netProfit ="500000", cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
+    return render_template('GrossMargin.html', title='Gross Margin', gm_chart=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), revenues=rev,  expenses=exp, netProfit ="500000", cursales="", prevsales="", curgroMar="8,320", prevgroMar="6,102")
 
 
 @app.route('/FvA/', methods=["POST", "GET"])
