@@ -48,6 +48,65 @@
   <div class="row" style="width: 100%">
     <div class="col" style="width: 33%">
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/" style="margin-top: 10px; margin-bottom: 10px;">KPI Analysis Dashboard</a>
+  <!-- just added -->
+  <div class="topnav">
+    <!-- <a class="active" href="#home">Home</a> -->
+    <style>
+      .interior {
+          height: 47%;
+          width: 98%;
+      }
+  
+      .outer {
+          height: 95%;
+          width: 95%;
+      }
+  
+      .overall {
+          height: 95%;
+          width: 95%;
+          margin: 10px auto 10px auto;
+          align: center;
+          padding: 30px;
+      }
+  
+      .mainrow {
+          height: 50%;
+          width: 98%;
+      }
+  
+      .bottomright {
+          height: 100%;
+          width: 35%;
+      }
+  
+      .bottomleft {
+          height: 100%;
+          width: 65%;
+      }
+  
+      a:link {
+          color: blue;
+          text-decoration: none;
+      }
+  
+      a:visited {
+          color: white;
+          text-decoration: none;
+      }
+  
+      a:hover {
+          color: red;
+          text-decoration: none;
+          font-weight: bold;
+      }
+  </style>
+    <div class="col" style="margin: 10px; border-radius: 10px; "></div>
+    <a href="/" style="margin-top: 10px; margin-bottom: 10px; padding-right: 10px;" >Home</a>
+    <a href="/inventory/" style="margin-top: 10px; margin-bottom: 10px; padding-right: 10px;" >Inventory</a>
+    <a href="/charts/" style="margin-top: 10px; margin-bottom: 10px; padding-right: 10px;">Performance</a>
+    <a href="/tabular/" style="margin-top: 10px; margin-bottom: 10px;" >Detailed Data</a>
+  </div>
     </div>
     <div class="col" style="width: 33%; margin-top: 10px; margin-bottom: 10px;">
     {% block navcontentcenter %}{% endblock %}
