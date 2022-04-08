@@ -38,7 +38,7 @@
     }
 
     a:link {
-        color: blue;
+        color: white;
         text-decoration: none;
     }
 
@@ -57,9 +57,7 @@
 {% block navcontentcenter %}
 <center><h3 style="color: white">{{ title }}</h3></center>
 <!-- new code 3 lines -->
-<form style = "margin-left: 95%; text-align: right;">
-    <input type="button" value="Go back!" onclick="history.back()">
-</form>
+
 {% endblock %}
 {% block navcontentright %}
 
@@ -94,12 +92,56 @@
         <label for="state">State</label>
         <select id="state" name="state" class="form-control form-control-sm">
             <option>N/A</option>
+            <option>Washington</option>
+            <option>Oregon</option>
+            <option>California</option>
+            <option>Idaho</option>
+            <option>Utah</option>
+            <option>Nevada</option>
+            <option>Montana</option>
+            <option>Wyoming</option>
+            <option>Colorado</option>
+            <option>Alaska</option>
+            <option>Hawaii</option>
+            <option>North Dakota</option>
+            <option>South Dakota</option>
+            <option>Nebraska</option>
+            <option>Kansas</option>
+            <option>Minnesota</option>
+            <option>Iowa</option>
+            <option>Missouri</option>
+            <option>Wisconsin</option>
+            <option>Illinois</option>
+            <option>Michigan</option>
+            <option>Indiana</option>
             <option>Ohio</option>
             <option>Arizona</option>
-            <option>California</option>
+            <option>New Mexico</option>
             <option>Texas</option>
-            <option>Florida</option>
+            <option>Oklahoma</option>
+            <option>Maine</option>
+            <option>New Hampshire</option>
+            <option>Vermont</option>
+            <option>Massachusetts</option>
             <option>New York</option>
+            <option>Rhode Island</option>
+            <option>Connecticut</option>
+            <option>New Jersey</option>
+            <option>Pennsylvania</option>
+            <option>Delaware</option>
+            <option>Maryland</option>
+            <option>West Virginia</option>
+            <option>Kentucky</option>
+            <option>Virginia</option>
+            <option>Arkansas</option>
+            <option>Tennessee</option>
+            <option>North Carolina</option>
+            <option>South Carolina</option>
+            <option>Mississippi</option>
+            <option>Alabama</option>
+            <option>Georgia</option>
+            <option>Louisiana</option>
+            <option>Florida</option>
         </select>
     </div>
     <div class="col">
@@ -136,23 +178,35 @@
     <!-- overall chart div -->
     <div class="overall">
         <div class="row mainrow">
-            <center><h4>{{ dynamic_title }}</h4></center>
-            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
-                <center><a href="/sales/" style="font-size: 32px;">Sales</a></center>
+            <center><h2>{{ dynamic_title }}</h2></center>
+            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; color: white; border-radius: 15px;">
+                <center><a href="/sales/" style="font-size: 32px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+  <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"></path>
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+  <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
+</svg>
+                    Sales</a></center>
                 <br>
                 <center><h6>Current Period: ${{cursales}}</h6></center>
                 <br>
-                <div id="chart1" class="chart" style="margin: 10px 10px 10px 10px; background-color: #25d2b8;"></div>
+                <div id="chart1" class="chart" style="margin: 10px 10px 10px 10px; background-color: #212529;"></div>
             </div>
-            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
-                <center><a href="/GM/" style="font-size: 32px;">Gross Margin</a></center>
+            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; color: white; border-radius: 15px;">
+                <center><a href="/GM/" style="font-size: 32px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calculator" viewBox="0 0 16 16">
+  <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+  <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z"/>
+</svg>
+                    Gross Margin</a></center>
                 <br>
                 <center><h6>Current Period: ${{curgroMar}}</h6></center>
                 <br>
                 <div id="chart2" class="chart" style="margin: 10px 10px 10px 10px background-color: #25d2b8;"></div>
             </div>
-            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
-                <center><a href="/FvA/" style="font-size: 32px;">Forecast vs. Actual</a></center>
+            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; color: white; border-radius: 15px;">
+                <center><a href="/FvA/" style="font-size: 32px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                    <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
+                    </svg>
+                    Forecast vs. Actual</a></center>
                 <br>
                 <center><h6>Percent Over Forecast: {{forPer}}%</h6></center>
                 <br>

@@ -12,6 +12,7 @@ class DataHolder():
         self.customersrows = pd.read_excel('GeneratedData.xlsx', sheet_name='Customers')
         self.productsrows = pd.read_excel('GeneratedData.xlsx', sheet_name='Products')
         self.forecastsrows = pd.read_excel('GeneratedData.xlsx', sheet_name='Monthly Forcast')
+        self.sales_total = self.salesrows['Price'].sum()
 
     def allsales(self):
         return self.salesrows
@@ -51,6 +52,7 @@ class DataHolder():
                     df = df[df['Order Date'].dt.month > 9]
             df = df.merge(right=self.customersrows, how='left', on='Customer ID')
             df = df[['Order Date', 'Order ID', 'Customer ID', 'Product ID', 'Quantity', 'Price', 'Customer City', 'Customer State', 'Sex']]
+            self.sales_total = df['Price'].sum()
 
         elif data == 'Customers':
             df = pd.merge(self.customersrows, self.salesrows, on='Customer ID')
@@ -253,28 +255,28 @@ class DataHolder():
 
         # Sum sales for each state based on region
         regional_sales = 0
-        if region == "west":
+        if region == "West":
             for state, sale in series.items():
                 if state in west:
                     regional_sales += sale
-        elif region == "midwest":
+        elif region == "Midwest":
             for state, sale in series.items():
                 if state in mid_west:
                     regional_sales += sale
-        elif region == "southwest":
+        elif region == "Southwest":
             for state, sale in series.items():
                 if state in south_west:
                     regional_sales += sale
-        elif region == "northeast":
+        elif region == "Northeast":
             for state, sale in series.items():
                 if state in north_east:
                     regional_sales += sale
-        elif region == "southeast":
+        elif region == "Southeast":
             for state, sale in series.items():
                 if state in south_east:
                     regional_sales += sale
         else:
-            print("Error: Region is non-recognizable. Please choose from 'west', 'midwest', 'southwest', 'northeast', or 'southeast'.")
+            print("Error: Region is non-recognizable. Please choose from 'West', 'Midwest', 'Southwest', 'Northeast', or 'Southeast'.")
 
         return regional_sales
 
@@ -297,27 +299,49 @@ class DataHolder():
 
         # Sum sales for each state based on region
         COGS = 0
-        if region == "west":
+        if region == "West":
             for state, sale in series.items():
                 if state in west:
                     COGS += sale
-        elif region == "midwest":
+        elif region == "Midwest":
             for state, sale in series.items():
                 if state in mid_west:
                     COGS += sale
-        elif region == "southwest":
+        elif region == "Southwest":
             for state, sale in series.items():
                 if state in south_west:
                     COGS += sale
-        elif region == "northeast":
+        elif region == "Northeast":
             for state, sale in series.items():
                 if state in north_east:
                     COGS += sale
-        elif region == "southeast":
+        elif region == "Southeast":
             for state, sale in series.items():
                 if state in south_east:
                     COGS += sale
         else:
-            print("Error: Region is non-recognizable. Please choose from 'west', 'midwest', 'southwest', 'northeast', or 'southeast'.")
+            print("Error: Region is non-recognizable. Please choose from 'West', 'Midwest', 'Southwest', 'Northeast', or 'Southeast'.")
 
         return COGS
+
+    # returns the top 4 selling categories with their revenues as a list of lists
+    def cat_sales(self, month='', quar=0, year=''):
+        df = self.time_filter(m=month, quarter=quar, y=year, data='Sales')
+        df = df.merge(right=self.productsrows, how='left', on='Product ID')
+        df = df[['Price', 'Category']]
+        cats = ['Pet Goods', 'Electronics', 'Outdoors Equipment', 'Cosmetics', 'Clothing', 'Home Goods', 'Food']
+        cat_sal = {}
+        df_s = df.groupby('Category')['Price'].sum()
+        for cat in cats:
+            cat_sal[cat] = df_s[cat]
+        cat_sales_f = []
+        for i in range(0,4):
+            max_key = 'Pet Goods'
+            for cat in cats:
+                if cat_sal[max_key] < cat_sal[cat]:
+                    max_key = cat
+            cat_sales_f.append([max_key, cat_sal[max_key]])
+            cat_sal[max_key] = 0
+        return cat_sales_f
+
+

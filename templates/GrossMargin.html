@@ -75,12 +75,56 @@
         <label for="state">State</label>
         <select id="state" name="state" class="form-control form-control-sm">
             <option>N/A</option>
+            <option>Washington</option>
+            <option>Oregon</option>
+            <option>California</option>
+            <option>Idaho</option>
+            <option>Utah</option>
+            <option>Nevada</option>
+            <option>Montana</option>
+            <option>Wyoming</option>
+            <option>Colorado</option>
+            <option>Alaska</option>
+            <option>Hawaii</option>
+            <option>North Dakota</option>
+            <option>South Dakota</option>
+            <option>Nebraska</option>
+            <option>Kansas</option>
+            <option>Minnesota</option>
+            <option>Iowa</option>
+            <option>Missouri</option>
+            <option>Wisconsin</option>
+            <option>Illinois</option>
+            <option>Michigan</option>
+            <option>Indiana</option>
             <option>Ohio</option>
             <option>Arizona</option>
-            <option>California</option>
+            <option>New Mexico</option>
             <option>Texas</option>
-            <option>Florida</option>
+            <option>Oklahoma</option>
+            <option>Maine</option>
+            <option>New Hampshire</option>
+            <option>Vermont</option>
+            <option>Massachusetts</option>
             <option>New York</option>
+            <option>Rhode Island</option>
+            <option>Connecticut</option>
+            <option>New Jersey</option>
+            <option>Pennsylvania</option>
+            <option>Delaware</option>
+            <option>Maryland</option>
+            <option>West Virginia</option>
+            <option>Kentucky</option>
+            <option>Virginia</option>
+            <option>Arkansas</option>
+            <option>Tennessee</option>
+            <option>North Carolina</option>
+            <option>South Carolina</option>
+            <option>Mississippi</option>
+            <option>Alabama</option>
+            <option>Georgia</option>
+            <option>Louisiana</option>
+            <option>Florida</option>
         </select>
     </div>
     <div class="col">
@@ -101,22 +145,6 @@
         M:["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         Q:["First Quarter", "Second Quarter", "Third Quarter", "Fourth Quarter"],
         Y:[""]
-    }
-
-    var state = {
-        Sales:["N/A", "Ohio", "Arizona", "California", "Texas", "Florida", "New York"],
-        Products:["N/A"],
-        Customers:["N/A", "Ohio", "Arizona", "California", "Texas", "Florida", "New York"],
-        Forecasts:["N/A"],
-        SBP:["N/A"]
-    }
-
-    var sex = {
-        Sales:["N/A", "Male", "Female"],
-        Products:["N/A"],
-        Customers:["N/A", "Male", "Female"],
-        Forecasts:["N/A"],
-        SBP:["N/A"]
     }
 
     function changecat1(value) {
@@ -153,17 +181,20 @@
 <center>
     <div class="overall">
         <div class="row mainrow">
-            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
+            <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; color: white; border-radius: 15px;">
                 <center><h2>Gross Margin</h2></center>
-                <br>
+                <center><h6>Net Profit: ${{ netProfit }}</h6></center>
                 <div id="chart2" class="chart" style="margin: 10px 10px 10px 10px"></div>
             </div>
             <div class="col">
-                <div style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
-                <h3 style="margin: 10px 10px 10px 10px">Revenue</h3>
-                <table class="table" style="margin: 10px 10px 10px 10px">
+                <div style="margin: 10px 10px 10px 10px; background-color: #212529; color: white; border-radius: 15px;">
+                <h3 style="margin: 10px 10px 10px 10px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-compass" viewBox="0 0 16 16">
+  <path d="M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016zm6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"></path>
+  <path d="m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z"></path>
+</svg>Revenue</h3>
+                <table class="table" style="margin: 10px 10px 10px 10px; color: white;">
                     <tr>
-                        <th style="width: 40px">Revenue Stream</th>
+                        <th style="width: 40px">Region</th>
                         <th style="width: 40px">Revenue Generated</th>
                     </tr>
                     {% for r in revenues: %}
@@ -173,18 +204,18 @@
                     </tr>
                     {% endfor %}
                     <tr>
-                        <td style="width: 40px">Total Revenue & Gains</td>
+                        <th style="width: 40px">Total Revenue & Gains</th>
                         <td style="width: 40px">${{ totalRevenue }}</td>
                     </tr>                    
                 </table>
                 </div>
                 <br>
-                <div style="margin: 10px 10px 10px 10px; background-color: #25d2b8; color: #414b49; border-radius: 15px;">
+                <div style="margin: 10px 10px 10px 10px; background-color: #212529; color: white; border-radius: 15px;">
                 <h3 style="margin: 10px 10px 10px 10px">Expenses</h3>
-                <table class="table" style="margin: 10px 10px 10px 10px">
+                <table class="table" style="margin: 10px 10px 10px 10px; color: white;">
                     <tr>
-                        <th style="width: 40px">Expense</th>
-                        <th style="width: 40px">Cost</th>
+                        <th style="width: 40px">Region</th>
+                        <th style="width: 40px">COGS</th>
                     </tr>
                     {% for e in expenses: %}
                     <tr>
@@ -193,11 +224,13 @@
                     </tr>
                     {% endfor %}
                     <tr>
-                        <td style="width: 40px">Total Expenses</td>
+                        <th style="width: 40px">Total Expenses</th>
                         <td style="width: 40px">${{ totalExpenses }}</td>
                     </tr>
-                </table>
-                <table class="table">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
                     <tr>
                         <th style="width: 40px">Net Profit</th>
                         <td style="width: 40px">${{ netProfit }}</td>

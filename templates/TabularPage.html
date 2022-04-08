@@ -2,8 +2,8 @@
 {% block title %}Tabular View{% endblock %}
 {% block style %}
 .collapsible {
-  background-color: #25d2b8;
-  color: #414b49;
+  background-color: #212529;
+  color: white;
   cursor: pointer;
   padding: 18px;
   width: 100%;
@@ -29,9 +29,6 @@
 {% block navcontentcenter %}
 <center><h3 style="color: white">{{ title }}</h3></center>
 <!-- new code 3 lines -->
-<form style = "margin-left: 95%; text-align: right;">
-    <input type="button" value="Go back!" onclick="history.back()">
-</form>
 {% endblock %}
 {% block navcontentright %}
 
@@ -76,12 +73,56 @@
         <label for="state">State</label>
         <select id="state" name="state" class="form-control form-control-sm">
             <option>N/A</option>
+            <option>Washington</option>
+            <option>Oregon</option>
+            <option>California</option>
+            <option>Idaho</option>
+            <option>Utah</option>
+            <option>Nevada</option>
+            <option>Montana</option>
+            <option>Wyoming</option>
+            <option>Colorado</option>
+            <option>Alaska</option>
+            <option>Hawaii</option>
+            <option>North Dakota</option>
+            <option>South Dakota</option>
+            <option>Nebraska</option>
+            <option>Kansas</option>
+            <option>Minnesota</option>
+            <option>Iowa</option>
+            <option>Missouri</option>
+            <option>Wisconsin</option>
+            <option>Illinois</option>
+            <option>Michigan</option>
+            <option>Indiana</option>
             <option>Ohio</option>
             <option>Arizona</option>
-            <option>California</option>
+            <option>New Mexico</option>
             <option>Texas</option>
-            <option>Florida</option>
+            <option>Oklahoma</option>
+            <option>Maine</option>
+            <option>New Hampshire</option>
+            <option>Vermont</option>
+            <option>Massachusetts</option>
             <option>New York</option>
+            <option>Rhode Island</option>
+            <option>Connecticut</option>
+            <option>New Jersey</option>
+            <option>Pennsylvania</option>
+            <option>Delaware</option>
+            <option>Maryland</option>
+            <option>West Virginia</option>
+            <option>Kentucky</option>
+            <option>Virginia</option>
+            <option>Arkansas</option>
+            <option>Tennessee</option>
+            <option>North Carolina</option>
+            <option>South Carolina</option>
+            <option>Mississippi</option>
+            <option>Alabama</option>
+            <option>Georgia</option>
+            <option>Louisiana</option>
+            <option>Florida</option>
         </select>
     </div>
     <div class="col">
@@ -105,9 +146,9 @@
     }
 
     var state = {
-        Sales:["N/A", "Ohio", "Arizona", "California", "Texas", "Florida", "New York"],
+        Sales:["N/A", "Washington", "Oregon", "California", "Idaho", "Utah", "Nevada", "Montana", "Wyoming", "Colorado", "Alaska", "Hawaii", "North Dakota", "South Dakota", "Nebraska", "Kansas", "Minnesota", "Iowa", "Missouri", "Wisconsin", "Illinois", "Michigan", "Indiana", "Ohio", "West Virginia", "Kentucky", "Virginia", "Arkansas", "Tennessee", "North Carolina", "South Carolina", "Mississippi", "Alabama", "Georgia", "Louisiana", "Florida", "Arizona", "New Mexico", "Texas", "Oklahoma", "Maine", "New Hampshire", "Vermont", "Massachusetts", "New York", "Rhode Island", "Connecticut", "New Jersey", "Pennsylvania", "Delaware", "Maryland"],
         Products:["N/A"],
-        Customers:["N/A", "Ohio", "Arizona", "California", "Texas", "Florida", "New York"],
+        Customers:["N/A", "Washington", "Oregon", "California", "Idaho", "Utah", "Nevada", "Montana", "Wyoming", "Colorado", "Alaska", "Hawaii", "North Dakota", "South Dakota", "Nebraska", "Kansas", "Minnesota", "Iowa", "Missouri", "Wisconsin", "Illinois", "Michigan", "Indiana", "Ohio", "West Virginia", "Kentucky", "Virginia", "Arkansas", "Tennessee", "North Carolina", "South Carolina", "Mississippi", "Alabama", "Georgia", "Louisiana", "Florida", "Arizona", "New Mexico", "Texas", "Oklahoma", "Maine", "New Hampshire", "Vermont", "Massachusetts", "New York", "Rhode Island", "Connecticut", "New Jersey", "Pennsylvania", "Delaware", "Maryland"],
         Forecasts:["N/A"],
         SBP:["N/A"]
     }
@@ -169,21 +210,21 @@
     </table>
     {% elif 'Sales' in chartTitle: %}
     <div class="row" style="width: 80%;">
-        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; height: 20vh; color: white; border-radius: 15px;">
             <h3 style="margin-top: 35px">Total Revenue</h3>
             <h4>${{sales['total']}}</h4>
         </div>
-        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; height: 20vh; color: white; border-radius: 15px;">
             <h3 style="margin-top: 35px">Quantity Sold</h3>
             <h4>{{sales['quan']}} items</h4>
         </div>
     </div>
     <div class="row" style="width: 80%">
-        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; height: 20vh; color: white; border-radius: 15px;">
             <h3 style="margin-top: 35px">Forecasted Revenue</h3>
             <h4>${{sales['forc']}}</h4>
         </div>
-        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; height: 20vh; color: white; border-radius: 15px;">
             <h3 style="margin-top: 35px">Top Selling Product Category</h3>
             <h4>{{sales['cat']}}</h4>
         </div>
@@ -207,21 +248,21 @@
     </div>
     {% elif 'Forecasts' in chartTitle: %}
     <div class="row" style="width: 80%;">
-        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; height: 20vh; color: white; border-radius: 15px;">
             <h3 style="margin-top: 35px">Predicted Revenue</h3>
             <h4>${{forc['forS']}}</h4>
         </div>
-        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; height: 20vh; color: white; border-radius: 15px;">
             <h3 style="margin-top: 35px">Actual Revenue</h3>
             <h4>${{forc['actS']}}</h4>
         </div>
     </div>
     <div class="row" style="width: 80%">
-        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; height: 20vh; color: white; border-radius: 15px;">
             <h3 style="margin-top: 35px">Predicted Quantity Sold</h3>
             <h4>{{forc['forQ']}} items</h4>
         </div>
-        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #25d2b8; height: 20vh; color: #414b49; border-radius: 15px;">
+        <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; height: 20vh; color: white; border-radius: 15px;">
             <h3 style="margin-top: 35px">Actual Quantity Sold</h3>
             <h4>{{forc['actQ']}} items</h4>
         </div>

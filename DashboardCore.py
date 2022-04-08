@@ -120,22 +120,58 @@ def inventory():
 
 @app.route('/sales/', methods=["POST", "GET"])
 def sales():
-    regions = ['west', 'midwest', 'southwest', 'northeast', 'southeast']
+    regions = ['West', 'Midwest', 'Southwest', 'Northeast', 'Southeast']
     region_rev = []
-
+    t_cat = [['Electronics', 1243], ['Home Goods', 1123], ['Textbooks', 987], ['Clothing', 872]]
+    dynamic_title = 'Sales '
     if request.method == 'GET':
         for region in regions:
             region_rev.append([region, dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')])
+        LeftMainGenerator.__init__('sales')
+        dynamic_title = 'Sales from 2020-2022'
+        t_cat = dh.cat_sales(month='', quar=0, year='')
     else:
         for region in regions:
-            region_rev.append([region, dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')])
+            month = ''
+            quar = 0
+            year = ''
+            if request.form['year'] != 'All':
+                year = request.form['year']
+            if 'timeframe' in request.form.keys():
+                if request.form['window'] == 'Q':
+                    if request.form['timeframe'] == 'First Quarter':
+                        quar = 1
+                    elif request.form['timeframe'] == 'Second Quarter':
+                        quar = 2
+                    elif request.form['timeframe'] == 'Third Quarter':
+                        quar = 3
+                    elif request.form['timeframe'] == 'Fourth Quarter':
+                        quar = 4
+                    else:
+                        quar = 0
+                if request.form['window'] == 'M':
+                    month = str(datetime.strptime(request.form['timeframe'], "%B").month)
+            region_rev.append([region, dh.get_region_rev(region, m=month, quarter=quar, y=year, data='Sales')])
+            t_cat = dh.cat_sales(month=month, quar=quar, year=year)
+        if 'product' not in request.form: # CASE: main chart update requested
+            LeftMainGenerator.getdata(request.form)
+            if 'timeframe' in request.form.keys():
+                if request.form['timeframe'] == 'All':
+                    dynamic_title = dynamic_title + " from 2020-2022"
+                    request.form['year'] = ''
+                else:
+                    dynamic_title = dynamic_title + " in " + request.form['timeframe']
+                    if request.form['year'] == 'All':
+                        dynamic_title = dynamic_title + " 2020, 2021, and 2022"
+                    else:
+                        dynamic_title = dynamic_title + ' ' + request.form['year']
 
-    return render_template('sales.html', title='Sales', sales_chart=LeftMainGenerator.generatechart(), top_prods=region_rev, top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102")
+    return render_template('sales.html', title='Sales', sales_chart=LeftMainGenerator.generatechart(), top_prods=region_rev, top_cats=t_cat, cursales=dh.sales_total, dyn_tit=dynamic_title)
 
 
 @app.route('/GM/', methods=["POST", "GET"])
 def grossMargin():
-    regions = ['west', 'midwest', 'southwest', 'northeast', 'southeast']
+    regions = ['West', 'Midwest', 'Southwest', 'Northeast', 'Southeast']
     rev = []
     exp = []
     total_rev = 0

@@ -124,18 +124,26 @@ class GraphGenerator:
             df = dh.get_data(inputs)
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
             mon_sal = []
+            mon_sal_f = []
+            mons_f = []
             self.tot_sales = 0
             for month in mons:
                 mon_sal.append(int(df[df['Order Date'].dt.month == month]['Price'].sum()))
                 self.tot_sales = self.tot_sales + mon_sal[month - 1]
+            for month in mons:
+                if mon_sal[month-1] > 0:
+                    mon_sal_f.append(mon_sal[month-1])
+                    mons_f.append(month)
             self.data = pd.DataFrame({
-                'Month': mons,
-                'Sales ($)': mon_sal
+                'Month': mons_f,
+                'Sales ($)': mon_sal_f
             })
             self.figure = px.scatter(self.data, x='Month', y='Sales ($)', trendline='lowess')
         elif self.position == 'gromar':
             # gross margin
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            mon_dict = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept',
+                        10: 'Oct', 11: 'Nov', 12: 'Dec'}
             inputs['data'] = 'Sales'
             df_cogs = dh.get_cogs(inputs)
             mon_sal = []
@@ -150,10 +158,15 @@ class GraphGenerator:
             for i in range(12):
                 mon_gross.append(mon_sal[i] - mon_cogs[i])
                 self.gro_mar = self.gro_mar + mon_gross[i]
+            mon_gross_f = []
+            mons_f = []
+            for month in mons:
+                if mon_gross[month-1] > 0:
+                    mon_gross_f.append(mon_gross[month-1])
+                    mons_f.append(mon_dict[month])
             self.data = pd.DataFrame({
-                'Month': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                          'October', 'November', 'December'],
-                'Gross Margin': mon_gross
+                'Month': mons_f,
+                'Gross Margin': mon_gross_f
             })
             self.figure = px.bar(self.data, x='Month', y='Gross Margin')
         elif self.position == 'forecasts':
@@ -175,16 +188,24 @@ class GraphGenerator:
                 temp_df = df_f[mon_cols]
                 mon_for.append(temp_df.sum().sum())
             self.for_per = sum(mon_sal) / sum(mon_for)
+            mon_sal_f = []
+            mon_for_f = []
+            mons_f = []
+            for month in mons:
+                if mon_sal[month-1] > 0:
+                    mons_f.append(month)
+                    mon_sal_f.append(mon_sal[month-1])
+                    mon_for_f.append(mon_for[month-1])
             df = pd.DataFrame({
-                'Month': mons,
-                'Sales': mon_sal,
-                'Forecast': mon_for
+                'Month': mons_f,
+                'Sales': mon_sal_f,
+                'Forecast': mon_for_f
             })
             self.figure = make_subplots()
 
-            self.figure.add_trace(go.Scatter(x=mons, y=mon_sal, name="Sales Values"))
-            self.figure.add_trace(go.Scatter(x=mons,
-                                             y=mon_for,
+            self.figure.add_trace(go.Scatter(x=mons_f, y=mon_sal_f, name="Sales Values"))
+            self.figure.add_trace(go.Scatter(x=mons_f,
+                                             y=mon_for_f,
                                              name="Forecast Values"))
             self.figure.update_xaxes(title_text='Month')
             self.figure.update_yaxes(title_text='Amount ($)')
