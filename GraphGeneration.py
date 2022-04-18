@@ -26,16 +26,30 @@ class GraphGenerator:
             # total sales throughout the year
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
             mon_sal = []
+            months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                         'October', 'November', 'December']
             df = dh.salesrows
             self.tot_sales = 0
             for month in mons:
                 mon_sal.append(int(df[df['Order Date'].dt.month == month]['Price'].sum()))
                 self.tot_sales = self.tot_sales + mon_sal[month - 1]
-            self.data = pd.DataFrame({
-                'Month': mons,
-                'Sales ($)': mon_sal
-            })
-            self.figure = px.scatter(self.data, x='Month', y='Sales ($)', trendline='lowess')
+            self.figure = go.Figure(go.Scatter(
+                x=months,
+                y=mon_sal
+            ))
+            self.figure.update_layout(
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)'
+            )
+            self.figure.update_xaxes(
+                title_text='Month',
+                tickangle=45,
+                color='white'
+            )
+            self.figure.update_yaxes(
+                title_text='Sales ($)',
+                color='white'
+            )
         elif position == 'gromar':
             # gross margin
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -57,10 +71,25 @@ class GraphGenerator:
                 'Gross Margin': mon_gross
             })
             self.figure = px.bar(self.data, x='Month', y='Gross Margin')
+            self.figure.update_layout(
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)'
+            )
+            self.figure.update_xaxes(
+                title_text='Month',
+                tickangle=45,
+                color='white'
+            )
+            self.figure.update_yaxes(
+                title_text='Gross Margin ($)',
+                color='white'
+            )
         elif position == 'forecasts':
             # forecast vs actual
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
             mon_dict = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug', 9: 'Sept', 10: 'Oct', 11: 'Nov', 12: 'Dec'}
+            months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                         'October', 'November', 'December']
             mon_sal = []
             mon_for = []
             df_s = dh.salesrows
@@ -73,25 +102,31 @@ class GraphGenerator:
                 temp_df = df_f[mon_cols]
                 mon_for.append(temp_df.sum().sum())
             self.for_per = sum(mon_sal) / sum(mon_for)
-            df = pd.DataFrame({
-                'Month': mons,
-                'Sales': mon_sal,
-                'Forecast': mon_for
-            })
             self.figure = make_subplots()
 
-            self.figure.add_trace(go.Scatter(x=mons, y=mon_sal, name="Sales Values"))
-            self.figure.add_trace(go.Scatter(x=mons,
+            self.figure.add_trace(go.Scatter(x=months, y=mon_sal, name="Sales Values"))
+            self.figure.add_trace(go.Scatter(x=months,
                                      y=mon_for,
                                      name="Forecast Values"))
-            self.figure.update_xaxes(title_text='Month')
-            self.figure.update_yaxes(title_text='Amount ($)')
             self.figure.update_layout(legend=dict(
                 yanchor="bottom",
                 y=0.01,
                 xanchor="left",
-                x=0.01
-            ))
+                x=0.01,
+                bgcolor='grey'
+            ),
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)'
+            )
+            self.figure.update_xaxes(
+                title_text='Month',
+                tickangle=45,
+                color='white'
+            )
+            self.figure.update_yaxes(
+                title_text='Amount ($)',
+                color='white'
+            )
         elif position == 'bottomRight':
             # total sales by region
             self.figure = go.Figure(data=[go.Table(header=dict(values=['Name', 'Value']), cells=dict(values=[['Total Revenue', 'Cost of Goods Sold', 'Gross Margin', 'Operating Expenses', 'Deprec/Apprec', 'Operating Income', 'Taxes', 'Net Income'], [1034503, 561123, 1034503-561123, 179000, 12534, 1034503-561123-179000-12534, 56369, (1034503-561123-179000-12534)-54369]]))])
