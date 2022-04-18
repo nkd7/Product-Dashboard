@@ -239,8 +239,7 @@ class DataHolder():
         
         # Merge sales with customers to get access to "Quantity", "Price", and "Customer State". Then drop unnecessary columns.
         df = self.time_filter(m=m, quarter=quarter, y=y, data='Sales')
-    
-        print(self.customersrows)
+
         df = pd.merge(df, self.customersrows, on='Customer ID')
                 
         # Create new column for "Sale". Sale = Quantity * Price. Then, create a series that contains total sales by state.

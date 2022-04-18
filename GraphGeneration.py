@@ -154,6 +154,8 @@ class GraphGenerator:
                 else:
                     inputs['quarter'] = 0
         dh = DataHolder()
+        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                  'October', 'November', 'December']
         if self.position == 'sales':
             inputs['data'] = 'Sales'
             df = dh.get_data(inputs)
@@ -168,12 +170,24 @@ class GraphGenerator:
             for month in mons:
                 if mon_sal[month-1] > 0:
                     mon_sal_f.append(mon_sal[month-1])
-                    mons_f.append(month)
-            self.data = pd.DataFrame({
-                'Month': mons_f,
-                'Sales ($)': mon_sal_f
-            })
-            self.figure = px.scatter(self.data, x='Month', y='Sales ($)', trendline='lowess')
+                    mons_f.append(months[month-1])
+            self.figure = go.Figure(go.Scatter(
+                x=mons_f,
+                y=mon_sal_f
+            ))
+            self.figure.update_layout(
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)'
+            )
+            self.figure.update_xaxes(
+                title_text='Month',
+                tickangle=45,
+                color='white'
+            )
+            self.figure.update_yaxes(
+                title_text='Sales ($)',
+                color='white'
+            )
         elif self.position == 'gromar':
             # gross margin
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -204,6 +218,19 @@ class GraphGenerator:
                 'Gross Margin': mon_gross_f
             })
             self.figure = px.bar(self.data, x='Month', y='Gross Margin')
+            self.figure.update_layout(
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)'
+            )
+            self.figure.update_xaxes(
+                title_text='Month',
+                tickangle=45,
+                color='white'
+            )
+            self.figure.update_yaxes(
+                title_text='Gross Margin ($)',
+                color='white'
+            )
         elif self.position == 'forecasts':
             # forecast vs actual
             mons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -228,14 +255,9 @@ class GraphGenerator:
             mons_f = []
             for month in mons:
                 if mon_sal[month-1] > 0:
-                    mons_f.append(month)
+                    mons_f.append(months[month-1])
                     mon_sal_f.append(mon_sal[month-1])
                     mon_for_f.append(mon_for[month-1])
-            df = pd.DataFrame({
-                'Month': mons_f,
-                'Sales': mon_sal_f,
-                'Forecast': mon_for_f
-            })
             self.figure = make_subplots()
 
             self.figure.add_trace(go.Scatter(x=mons_f, y=mon_sal_f, name="Sales Values"))
@@ -248,8 +270,21 @@ class GraphGenerator:
                 yanchor="bottom",
                 y=0.01,
                 xanchor="left",
-                x=0.01
-            ))
+                x=0.01,
+                bgcolor='grey'
+            ),
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)'
+            )
+            self.figure.update_xaxes(
+                title_text='Month',
+                tickangle=45,
+                color='white'
+            )
+            self.figure.update_yaxes(
+                title_text='Amount ($)',
+                color='white'
+            )
         self.input_dis = inputs
         self.jsonFigure = json.dumps(self.figure, cls=plotly.utils.PlotlyJSONEncoder)
 
