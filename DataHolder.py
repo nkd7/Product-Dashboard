@@ -30,7 +30,7 @@ class DataHolder():
     # quarter: 1-4 as an int
     # y: 2020, 2021, or 2022 as a string
     # data: Sales, Customers, Products, or Forecasts as a string
-    def time_filter(self, m='', quarter='', y='', data=''):
+    def time_filter(self, m='', quarter=0, y='', data=''):
         df = pd.DataFrame
         temp = None
         if data == 'Sales':
@@ -339,8 +339,47 @@ class DataHolder():
             for cat in cats:
                 if cat_sal[max_key] < cat_sal[cat]:
                     max_key = cat
-            cat_sales_f.append([max_key, cat_sal[max_key]])
+            cat_sales_f.append([max_key, int(cat_sal[max_key])])
             cat_sal[max_key] = 0
         return cat_sales_f
 
+    def for_cats(self, month='', quar=0, year=''):
+        for_cat_f = []
+        df = self.time_filter(m=month, quarter=quar, y=year, data='Forecasts')
+        df = df.merge(right=self.productsrows, how='left', left_on='Product_Id', right_on='Product ID')
+        col_list = []
+        for col in df.columns:
+            if 'Sales' in col:
+                col_list.append(col)
+        df['total'] = df[col_list].sum(axis=1)
+        df = df[['Category', 'total']]
+        df_f = df.groupby('Category')['total'].sum()
+        cat_fors = {}
+        cats = ['Pet Goods', 'Electronics', 'Outdoors Equipment', 'Cosmetics', 'Clothing', 'Home Goods', 'Food']
+        for cat in cats:
+            cat_fors[cat] = df_f[cat]
+        for i in range(0,4):
+            max_key = 'Pet Goods'
+            for cat in cats:
+                if cat_fors[max_key] < cat_fors[cat]:
+                    max_key = cat
+            for_cat_f.append([max_key, int(cat_fors[max_key])])
+            cat_fors[max_key] = 0
+        return for_cat_f
 
+    def for_prods(self, month='', quar=0, year=''):
+        for_cat_f = []
+        df = self.time_filter(m=month, quarter=quar, y=year, data='Forecasts')
+        df = df.merge(right=self.productsrows, how='left', left_on='Product_Id', right_on='Product ID')
+        col_list = []
+        for col in df.columns:
+            if 'Sales' in col:
+                col_list.append(col)
+        df['total'] = df[col_list].sum(axis=1)
+        df = df[['Product_Id', 'total']]
+        df = df.sort_values(by=['total'])
+        df = df.head(5)
+        for index, row in df.iterrows():
+            for_cat_f.append([row['Product_Id'], row['total']])
+        for_cat_f.reverse()
+        return for_cat_f

@@ -35,7 +35,8 @@ class GraphGenerator:
                 self.tot_sales = self.tot_sales + mon_sal[month - 1]
             self.figure = go.Figure(go.Scatter(
                 x=months,
-                y=mon_sal
+                y=mon_sal,
+                marker=dict(size=12)
             ))
             self.figure.update_layout(
                 paper_bgcolor='rgba(0,0,0,0)',
@@ -104,10 +105,8 @@ class GraphGenerator:
             self.for_per = sum(mon_sal) / sum(mon_for)
             self.figure = make_subplots()
 
-            self.figure.add_trace(go.Scatter(x=months, y=mon_sal, name="Sales Values"))
-            self.figure.add_trace(go.Scatter(x=months,
-                                     y=mon_for,
-                                     name="Forecast Values"))
+            self.figure.add_trace(go.Scatter(x=months, y=mon_sal, name="Sales Values", marker=dict(size=12)))
+            self.figure.add_trace(go.Scatter(x=months, y=mon_for, name="Forecast Values", marker=dict(size=12)))
             self.figure.update_layout(legend=dict(
                 yanchor="bottom",
                 y=0.01,
@@ -116,7 +115,10 @@ class GraphGenerator:
                 bgcolor='grey'
             ),
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)'
+                plot_bgcolor='rgba(0,0,0,0)',
+                hovermode='x unified',
+                hoverlabel=dict(bgcolor='rgba(255,255,255,0.75)',
+                font=dict(color='black'))
             )
             self.figure.update_xaxes(
                 title_text='Month',
@@ -173,7 +175,8 @@ class GraphGenerator:
                     mons_f.append(months[month-1])
             self.figure = go.Figure(go.Scatter(
                 x=mons_f,
-                y=mon_sal_f
+                y=mon_sal_f,
+                marker=dict(size=12)
             ))
             self.figure.update_layout(
                 paper_bgcolor='rgba(0,0,0,0)',
@@ -249,7 +252,7 @@ class GraphGenerator:
                 mon_cols = [col for col in mon_cols if 'Sales' in col]
                 temp_df = df_f[mon_cols]
                 mon_for.append(temp_df.sum().sum())
-            self.for_per = sum(mon_sal) / sum(mon_for)
+            self.for_per = (sum(mon_sal) - sum(mon_for))/ sum(mon_for)
             mon_sal_f = []
             mon_for_f = []
             mons_f = []
@@ -260,10 +263,8 @@ class GraphGenerator:
                     mon_for_f.append(mon_for[month-1])
             self.figure = make_subplots()
 
-            self.figure.add_trace(go.Scatter(x=mons_f, y=mon_sal_f, name="Sales Values"))
-            self.figure.add_trace(go.Scatter(x=mons_f,
-                                             y=mon_for_f,
-                                             name="Forecast Values"))
+            self.figure.add_trace(go.Scatter(x=mons_f, y=mon_sal_f, name="Sales Values", marker=dict(size=12)))
+            self.figure.add_trace(go.Scatter(x=mons_f, y=mon_for_f, name="Forecast Values", marker=dict(size=12)))
             self.figure.update_xaxes(title_text='Month')
             self.figure.update_yaxes(title_text='Amount ($)')
             self.figure.update_layout(legend=dict(
@@ -274,7 +275,10 @@ class GraphGenerator:
                 bgcolor='grey'
             ),
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)'
+                plot_bgcolor='rgba(0,0,0,0)',
+                hovermode='x unified',
+                hoverlabel=dict(bgcolor='rgba(255,255,255,0.75)',
+                font=dict(color='black'))
             )
             self.figure.update_xaxes(
                 title_text='Month',

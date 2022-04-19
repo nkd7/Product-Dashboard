@@ -4,6 +4,8 @@ from flask import Flask, render_template, request, redirect
 from GraphGeneration import GraphGenerator
 from DataHolder import DataHolder
 
+from pysideflask import init_gui
+
 app = Flask(__name__)
 
 LeftMainGenerator = GraphGenerator('sales')
@@ -107,6 +109,8 @@ def tabular():
             df = dh.get_data(input_dict)
             if request.form['type'] == 'Forecasts':
                 for_dict = dh.for_data(df, input_dict)
+            if request.form['type'] == 'Customers':
+                df = df.drop_duplicates(subset=['Customer Address'])
             head = df.columns
             vals = df.values
     return render_template("TabularPage.html", title='Sales and Product Data', chartTitle=title, header=head, dat=vals, sales=sales_dict, forc=for_dict)
@@ -176,7 +180,6 @@ def grossMargin():
     exp = []
     total_rev = 0
     total_exp = 0
-    net_prof = 0
 
     if request.method == 'GET':
         for region in regions:
@@ -186,22 +189,78 @@ def grossMargin():
             exp.append([region, dh.get_regional_cogs(region, m='', quarter=0, y='', data='Sales')])
     else:
         for region in regions:
-            total_rev += dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')
-            rev.append([region, dh.get_region_rev(region, m='', quarter=0, y='', data='Sales')])
-            total_exp += dh.get_regional_cogs(region, m='', quarter=0, y='', data='Sales')
-            exp.append([region, dh.get_regional_cogs(region, m='', quarter=0, y='', data='Sales')])
+            month = ''
+            quar = 0
+            year = ''
+            if request.form['year'] != 'All':
+                year = request.form['year']
+            if 'timeframe' in request.form.keys():
+                if request.form['window'] == 'Q':
+                    if request.form['timeframe'] == 'First Quarter':
+                        quar = 1
+                    elif request.form['timeframe'] == 'Second Quarter':
+                        quar = 2
+                    elif request.form['timeframe'] == 'Third Quarter':
+                        quar = 3
+                    elif request.form['timeframe'] == 'Fourth Quarter':
+                        quar = 4
+                    else:
+                        quar = 0
+                if request.form['window'] == 'M':
+                    month = str(datetime.strptime(request.form['timeframe'], "%B").month)
+            total_rev += dh.get_region_rev(region, m=month, quarter=quar, y=year, data='Sales')
+            rev.append([region, dh.get_region_rev(region, m=month, quarter=quar, y=year, data='Sales')])
+            total_exp += dh.get_regional_cogs(region, m=month, quarter=quar, y=year, data='Sales')
+            exp.append([region, dh.get_regional_cogs(region, m=month, quarter=quar, y=year, data='Sales')])
+            CenterMainGenerator.getdata(request.form)
 
     net_prof = total_rev - total_exp
 
-    return render_template('GrossMargin.html', title='Gross Margin', gm_chart=CenterMainGenerator.generatechart(), bottomLeft=RightMainGenerator.generatechart(), revenues=rev, totalRevenue=total_rev, totalExpenses=total_exp,  expenses=exp, netProfit=net_prof)
+    return render_template('GrossMargin.html', title='Gross Margin', gm_chart=CenterMainGenerator.generatechart(), revenues=rev, totalRevenue=total_rev, totalExpenses=total_exp,  expenses=exp, netProfit=net_prof)
 
 
 @app.route('/FvA/', methods=["POST", "GET"])
 def ForecastVsActual():
-
-    return render_template('ForecastVsActual.html', title='Forecast vs. Actual', fva_chart=RightMainGenerator.generatechart(), top_prods=[['Product A', 1332], ['Product D', 1298], ['Product H', 1209], ['Product C', 1108], ['Product D', 1067]], top_cats=['Electronics', 'Home Goods', 'Textbooks'], cursales="36,173", prevsales="31,651", curgroMar="8,320", prevgroMar="6,102", forPer="+12.4%")
+    dyn_title = 'Forecasted Sales in '
+    for_cats = dh.for_cats(month='', quar=0, year='')
+    for_prods = dh.for_prods(month='', quar=0, year='')
+    if request.method == 'POST':
+        q = 0
+        m = ''
+        y = ''
+        if request.form['year'] != 'All':
+            y = request.form['year']
+        if request.form['window'] == 'M':
+            # dyn_title = dyn_title + str(datetime.strptime(request.form['timeframe'], "%B").month) + ' of '
+            dyn_title = dyn_title + request.form['timeframe'] + ' of '
+            m = str(datetime.strptime(request.form['timeframe'], "%B").month)
+        if request.form['window'] == 'Q':
+            if request.form['timeframe'] == 'First Quarter':
+                dyn_title = dyn_title + 'the First Quarter of '
+                q = 1
+            elif request.form['timeframe'] == 'Second Quarter':
+                dyn_title = dyn_title + 'the Second Quarter of '
+                q = 2
+            elif request.form['timeframe'] == 'Third Quarter':
+                dyn_title = dyn_title + 'the Third Quarter of '
+                q = 3
+            elif request.form['timeframe'] == 'Fourth Quarter':
+                dyn_title = dyn_title + 'the Fourth Quarter of '
+                q = 4
+        if request.form['year'] == 'All':
+            dyn_title = dyn_title + '2020, 2021, and 2022'
+        else:
+            dyn_title = dyn_title + request.form['year']
+        RightMainGenerator.getdata(request.form)
+        print(f"""m: {m} q: {q} y: {y}""")
+        for_cats = dh.for_cats(month=m, quar=q, year=y)
+        for_prods = dh.for_prods(month=m, quar=q, year=y)
+    else:
+        RightMainGenerator.getdata({'window': 'Y', 'year': 'All'})
+        dyn_title = dyn_title + '2020, 2021, and 2022'
+    return render_template('ForecastVsActual.html', title=dyn_title, fva_chart=RightMainGenerator.generatechart(), for_products=for_prods, top_cats=for_cats, forPer=round(RightMainGenerator.for_per, 2))
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    init_gui(app)
 

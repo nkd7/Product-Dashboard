@@ -40,7 +40,7 @@
 </style>
 {% endblock %}
 {% block navcontentcenter %}
-<center><h3 style="color: white">{{ title }}</h3></center>
+<center><h3 style="color: white">Forecast vs. Actual Sales</h3></center>
 {% endblock %}
 {% block navcontentright %}
 
@@ -134,12 +134,42 @@
     <div class="overall">
         <div class="row mainrow">
             <div class="col" style="margin: 10px 10px 10px 10px; background-color: #212529; color: white; border-radius: 15px;">
-                <center><h2>Forecast vs. Actual</h2></center>
-                <br>
-                <center><h6>Percent Over Forecast: ${{forPer}}</h6></center>
-                <br>
+                <center><h2>{{ title }}</h2></center>
+                <center><h6>Percent Over Forecast: {{ forPer }}%</h6></center>
                 <div id="chart3" class="chart" style="margin: 10px 10px 10px 10px"></div>
-            </div>        
+            </div>
+            <div class="col">
+                <div style="margin: 10px 10px 10px 10px; background-color: #212529; color: white; border-radius: 15px;">
+                    <h3 style="margin: 10px 10px 10px 10px">Top Forecasted Categories</h3>
+                    <table class="table" style="margin: 10px 10px 10px 10px; color: white;">
+                        <tr>
+                            <th style="width: 40px">Category</th>
+                            <th style="width: 40px">Expected Revenue ($)</th>
+                        </tr>
+                        {% for r in top_cats: %}
+                        <tr>
+                            <td style="width: 40px">{{ r[0] }}</td>
+                            <td style="width: 40px">${{ r[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div style="margin: 10px 10px 10px 10px; background-color: #212529; color: white; border-radius: 15px;">
+                    <h3 style="margin: 10px 10px 10px 10px">Top Forecasted Products</h3>
+                    <table class="table" style="margin: 10px 10px 10px 10px; color: white;">
+                        <tr>
+                            <th style="width: 40px">Product</th>
+                            <th style="width: 40px">Expected Revenue ($)</th>
+                        </tr>
+                        {% for s in for_products: %}
+                        <tr>
+                            <td style="width: 40px">{{ s[0] }}</td>
+                            <td style="width: 40px">${{ s[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </center>
