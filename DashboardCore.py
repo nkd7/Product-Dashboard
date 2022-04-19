@@ -4,9 +4,11 @@ from flask import Flask, render_template, request, redirect
 from GraphGeneration import GraphGenerator
 from DataHolder import DataHolder
 
-from pysideflask import init_gui
+# from flaskwebgui import FlaskUI
 
 app = Flask(__name__)
+
+# ui = FlaskUI(app)
 
 LeftMainGenerator = GraphGenerator('sales')
 CenterMainGenerator = GraphGenerator('gromar')
@@ -262,5 +264,6 @@ def ForecastVsActual():
 
 
 if __name__ == '__main__':
-    init_gui(app)
+    # ui.run()
+    app.run()
 
